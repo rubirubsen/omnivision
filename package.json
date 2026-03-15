@@ -1,0 +1,16 @@
+{
+  "name": "omnivision",
+  "version": "1.0.0",
+  "main": "proxy.js",
+  "scripts": {
+    "start": "node proxy.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "ws": "^8.19.0"
+  }
+}

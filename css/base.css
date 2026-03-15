@@ -1,0 +1,108 @@
+/* =====================================================
+   BASE — Reset, Variables, Layout
+   ===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+
+:root {
+  --bg:       #020408;
+  --accent:   #00ffe0;
+  --accent2:  #ff4444;
+  --accent3:  #ffd700;
+  --accent4:  #4488ff;
+  --panel:    rgba(2, 10, 20, 0.88);
+  --border:   rgba(0, 255, 224, 0.15);
+  --text:     #c8d8e8;
+  --dim:      #4a6070;
+
+  --font-mono: 'Space Mono', monospace;
+  --font-display: 'Syne', sans-serif;
+
+  --radius: 0px; /* sharp/military aesthetic */
+  --transition: 0.2s ease;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+}
+
+body {
+  cursor: grab;
+}
+body.dragging {
+  cursor: grabbing;
+}
+
+/* Leaflet cursor */
+.leaflet-container {
+  cursor: grab !important;
+}
+.leaflet-container.leaflet-dragging {
+  cursor: grabbing !important;
+}
+
+/* Containers */
+#canvas-container,
+#map-container {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+#map-container {
+  display: none; /* shown via App.setView() */
+}
+
+#windy {
+  width: 100%;
+  height: 100%;
+}
+
+/* Scan-line overlay */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Corner brackets */
+.corner {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  z-index: 15;
+}
+.corner::before,
+.corner::after {
+  content: '';
+  position: absolute;
+  background: var(--accent);
+  opacity: 0.6;
+}
+.corner::before { width: 100%; height: 1px; top: 0; left: 0; }
+.corner::after  { width: 1px; height: 100%; top: 0; left: 0; }
+
+.corner-tl { top: 0;    left: 0; }
+.corner-tr { top: 0;    right: 0;  transform: scaleX(-1); }
+.corner-bl { bottom: 0; left: 0;   transform: scaleY(-1); }
+.corner-br { bottom: 0; right: 0;  transform: scale(-1); }

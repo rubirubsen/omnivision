@@ -1,0 +1,1180 @@
+[
+  {
+    "id": "openstreetmap_osm",
+    "cat": "basemap",
+    "title": "OpenStreetMap (OSM)",
+    "desc": "Standard-Straßenkarte der Welt, Community-gepflegt",
+    "tags": [
+      "XYZ Tiles",
+      "0 Cost"
+    ],
+    "link": "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+  },
+  {
+    "id": "opentopomap",
+    "cat": "basemap",
+    "title": "OpenTopoMap",
+    "desc": "Topografische Karte basierend auf OSM + SRTM-Höhendaten",
+    "tags": [
+      "XYZ Tiles",
+      "0 Cost"
+    ],
+    "link": "https://tile.opentopomap.org/{z}/{x}/{y}.png"
+  },
+  {
+    "id": "stadia_maps_ex_stamen",
+    "cat": "basemap",
+    "title": "Stadia Maps (ex-Stamen)",
+    "desc": "Watercolor, Toner, Terrain – stilvolle Basiskarten",
+    "tags": [
+      "XYZ Tiles",
+      "Freemium"
+    ],
+    "link": "https://stadiamaps.com/"
+  },
+  {
+    "id": "cartodb__carto_basemaps",
+    "cat": "basemap",
+    "title": "CartoDB / CARTO Basemaps",
+    "desc": "Light, Dark, Voyager – minimalistische Basiskarten",
+    "tags": [
+      "XYZ Tiles",
+      "0 Cost"
+    ],
+    "link": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
+  },
+  {
+    "id": "openmaptiles",
+    "cat": "basemap",
+    "title": "OpenMapTiles",
+    "desc": "Selbst-hostbare Vektor-Tiles basierend auf OSM",
+    "tags": [
+      "Vector Tiles"
+    ],
+    "link": "https://openmaptiles.org/"
+  },
+  {
+    "id": "protomaps",
+    "cat": "basemap",
+    "title": "Protomaps",
+    "desc": "OSM-Basiskarte als einzelne PMTiles-Datei",
+    "tags": [
+      "PMTiles",
+      "0 Cost"
+    ],
+    "link": "https://protomaps.com/"
+  },
+  {
+    "id": "mapbox",
+    "cat": "basemap",
+    "title": "Mapbox",
+    "desc": "Vektor-Tiles, Geocoding, Routing (Free Tier)",
+    "tags": [
+      "Vector Tiles",
+      "API",
+      "Freemium"
+    ],
+    "link": "https://www.mapbox.com/"
+  },
+  {
+    "id": "geoapify",
+    "cat": "basemap",
+    "title": "Geoapify",
+    "desc": "Vektor- und Raster-Maps, Geocoding, Routing (Free Tier)",
+    "tags": [
+      "XYZ",
+      "Vector Tiles",
+      "Freemium"
+    ],
+    "link": "https://www.geoapify.com/"
+  },
+  {
+    "id": "nasa_gibs_worldview",
+    "cat": "satellite",
+    "title": "NASA GIBS (Worldview)",
+    "desc": "Hunderte Satelliten-Layer: MODIS, VIIRS, Landsat u.v.m.",
+    "tags": [
+      "WMTS",
+      "WMS",
+      "TWMS",
+      "0 Cost"
+    ],
+    "link": "https://gibs.earthdata.nasa.gov/"
+  },
+  {
+    "id": "copernicus__sentinel_hub",
+    "cat": "satellite",
+    "title": "Copernicus / Sentinel Hub",
+    "desc": "Sentinel-2 Multispektral, NDVI, True Color, u.v.m.",
+    "tags": [
+      "WMS",
+      "WMTS",
+      "WCS",
+      "Freemium"
+    ],
+    "link": "https://dataspace.copernicus.eu/"
+  },
+  {
+    "id": "sentinelmap",
+    "cat": "satellite",
+    "title": "SentinelMap",
+    "desc": "Cloud-freie Sentinel-2 Basemap-Tiles",
+    "tags": [
+      "XYZ Tiles",
+      "Freemium"
+    ],
+    "link": "https://www.sentinelmap.eu/"
+  },
+  {
+    "id": "esri_world_imagery",
+    "cat": "satellite",
+    "title": "ESRI World Imagery",
+    "desc": "Hochauflösende Satellitenbilder weltweit",
+    "tags": [
+      "XYZ Tiles",
+      "0 Cost"
+    ],
+    "link": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+  },
+  {
+    "id": "copernicus_global_land",
+    "cat": "satellite",
+    "title": "Copernicus Global Land",
+    "desc": "Vegetation, Bodenfeuchte, Schnee – globale Ökosystem-Layer",
+    "tags": [
+      "WMTS",
+      "WCS",
+      "0 Cost"
+    ],
+    "link": "https://viewer.globalland.vgt.vito.be/"
+  },
+  {
+    "id": "owm",
+    "cat": "weather",
+    "title": "OpenWeatherMap Tiles",
+    "desc": "Wind, Temperatur, Wolken, Druck, Niederschlag als Kacheln über die 2D-Karte.",
+    "tags": [
+      "API",
+      "Tiles"
+    ],
+    "link": "https://openweathermap.org/api/",
+    "implemented": true
+  },
+  {
+    "id": "noaa__nws_wms",
+    "cat": "weather",
+    "title": "NOAA / NWS WMS",
+    "desc": "US-Wetterdaten: Radar, Vorhersagen, Warnungen",
+    "tags": [
+      "WMS",
+      "WFS",
+      "0 Cost"
+    ],
+    "link": "https://opengeo.ncep.noaa.gov/geoserver/www/index.html"
+  },
+  {
+    "id": "ndfd_national_digital_forecast",
+    "cat": "weather",
+    "title": "NDFD (National Digital Forecast)",
+    "desc": "US-Wettervorhersage-Karten (Temperatur, Wind, etc.)",
+    "tags": [
+      "WMS",
+      "0 Cost"
+    ],
+    "link": "https://digital.weather.gov/ndfd/wms?REQUEST=GetCapabilities"
+  },
+  {
+    "id": "rainviewer",
+    "cat": "weather",
+    "title": "RainViewer",
+    "desc": "Radar- und Satelliten-Overlay. JSON-Endpoint liefert tile-URLs mit Timestamp-Sequenz.",
+    "tags": [
+      "API",
+      "Radar",
+      "0 Cost"
+    ],
+    "link": "https://www.rainviewer.com/api.html",
+    "implemented": true
+  },
+  {
+    "id": "waqi_aqicnorg_tiles",
+    "cat": "air_quality",
+    "title": "WAQI (aqicn.org) Tiles",
+    "desc": "Echtzeit-Luftqualitätsindex als Karten-Overlay weltweit",
+    "tags": [
+      "XYZ Tiles",
+      "Freemium"
+    ],
+    "link": "https://aqicn.org/api/"
+  },
+  {
+    "id": "openweathermap_air_pollution",
+    "cat": "air_quality",
+    "title": "OpenWeatherMap Air Pollution",
+    "desc": "CO, NO2, O3, SO2, PM2.5, PM10 – global",
+    "tags": [
+      "JSON API",
+      "Freemium"
+    ],
+    "link": "https://openweathermap.org/api/air-pollution"
+  },
+  {
+    "id": "caeli__tropomi_air_quality",
+    "cat": "air_quality",
+    "title": "Caeli / Tropomi Air Quality",
+    "desc": "Near-Realtime Luftqualität basierend auf Tropomi-Daten",
+    "tags": [
+      "WMS",
+      "WMTS",
+      "0 Cost"
+    ],
+    "link": "https://www.ellipsis-drive.com/"
+  },
+  {
+    "id": "european_environment_agency",
+    "cat": "air_quality",
+    "title": "European Environment Agency",
+    "desc": "EU-Luftqualitätsstationen und Messdaten",
+    "tags": [
+      "WMS",
+      "WFS",
+      "0 Cost"
+    ],
+    "link": "https://discomap.eea.europa.eu/"
+  },
+  {
+    "id": "usgs_earthquake_api",
+    "cat": "nature",
+    "title": "USGS Earthquake API",
+    "desc": "Echtzeit-Erdbeben weltweit als GeoJSON",
+    "tags": [
+      "GeoJSON",
+      "KML",
+      "0 Cost"
+    ],
+    "link": "https://earthquake.usgs.gov/fdsnws/event/1/"
+  },
+  {
+    "id": "usgs_shakemaps",
+    "cat": "nature",
+    "title": "USGS ShakeMaps",
+    "desc": "Erdbebenintensitäts-Karten",
+    "tags": [
+      "WMS",
+      "GeoJSON",
+      "0 Cost"
+    ],
+    "link": "https://earthquake.usgs.gov/ws/"
+  },
+  {
+    "id": "usgs_volcano_hazards",
+    "cat": "nature",
+    "title": "USGS Volcano Hazards",
+    "desc": "Vulkan-Überwachung und Gefahrenzonen",
+    "tags": [
+      "GeoJSON",
+      "API",
+      "0 Cost"
+    ],
+    "link": "https://www.usgs.gov/products/web-tools/apis"
+  },
+  {
+    "id": "nasa_firms_fire",
+    "cat": "nature",
+    "title": "NASA FIRMS (Fire)",
+    "desc": "Globale Feuer-Erkennung via Landsat/MODIS/VIIRS",
+    "tags": [
+      "WMS",
+      "GeoJSON",
+      "Freemium"
+    ],
+    "link": "https://firms.modaps.eosdis.nasa.gov/"
+  },
+  {
+    "id": "effis_eu_forest_fires",
+    "cat": "nature",
+    "title": "EFFIS (EU Forest Fires)",
+    "desc": "Europäisches Waldbrand-Informationssystem",
+    "tags": [
+      "WMS",
+      "0 Cost"
+    ],
+    "link": "https://effis.jrc.ec.europa.eu/"
+  },
+  {
+    "id": "open_elevation_api",
+    "cat": "nature",
+    "title": "Open-Elevation API",
+    "desc": "Höhendaten für beliebige Koordinaten",
+    "tags": [
+      "REST API",
+      "0 Cost"
+    ],
+    "link": "https://open-elevation.com/"
+  },
+  {
+    "id": "copernicus_dem_glo_30",
+    "cat": "nature",
+    "title": "Copernicus DEM (GLO-30)",
+    "desc": "Globales Höhenmodell 30m Auflösung",
+    "tags": [
+      "WCS",
+      "COG",
+      "0 Cost"
+    ],
+    "link": "https://portal.opentopography.org/"
+  },
+  {
+    "id": "srtm_via_nasa_gibs",
+    "cat": "nature",
+    "title": "SRTM via NASA GIBS",
+    "desc": "Shuttle Radar Topography Mission Höhendaten",
+    "tags": [
+      "WMTS",
+      "0 Cost"
+    ],
+    "link": "https://gibs.earthdata.nasa.gov/"
+  },
+  {
+    "id": "openrailwaymap",
+    "cat": "traffic",
+    "title": "OpenRailwayMap",
+    "desc": "Eisenbahninfrastruktur weltweit",
+    "tags": [
+      "XYZ Tiles",
+      "0 Cost"
+    ],
+    "link": "https://www.openrailwaymap.org/"
+  },
+  {
+    "id": "opnvkarte",
+    "cat": "traffic",
+    "title": "OPNVKarte",
+    "desc": "ÖPNV-Karte (Bus, Tram, U-Bahn etc.)",
+    "tags": [
+      "XYZ Tiles",
+      "0 Cost"
+    ],
+    "link": "https://www.opnvkarte.de/"
+  },
+  {
+    "id": "openseamap",
+    "cat": "naval",
+    "title": "OpenSeaMap",
+    "desc": "Seekarte mit Seezeichen, Häfen, Tiefen – als Overlay über beliebige Basiskarte.",
+    "tags": [
+      "XYZ Tiles",
+      "0 Cost"
+    ],
+    "link": "https://www.openseamap.org/"
+  },
+  {
+    "id": "graphhopper",
+    "cat": "traffic",
+    "title": "GraphHopper",
+    "desc": "Routing & Geocoding (Free Tier)",
+    "tags": [
+      "REST API",
+      "Freemium"
+    ],
+    "link": "https://www.graphhopper.com/"
+  },
+  {
+    "id": "openfiremap",
+    "cat": "nature",
+    "title": "OpenFireMap",
+    "desc": "Feuerwachen und Hydranten",
+    "tags": [
+      "XYZ Tiles",
+      "0 Cost"
+    ],
+    "link": "https://openfiremap.org/"
+  },
+  {
+    "id": "openaip",
+    "cat": "aero",
+    "title": "OpenAIP",
+    "desc": "Luftraumzonen: FIR, TMA, CTR, Restricted, Danger. 7 Weltregionen, 24h Disk-Cache.",
+    "tags": [
+      "API",
+      "GeoJSON"
+    ],
+    "link": "https://www.openaip.net/",
+    "implemented": true
+  },
+  {
+    "id": "safecast",
+    "cat": "nature",
+    "title": "SafeCast",
+    "desc": "Radioaktivitätsmessungen weltweit — Community-Messstationen nach Fukushima entstanden.",
+    "tags": [
+      "XYZ Tiles",
+      "0 Cost"
+    ],
+    "link": "https://safecast.org/"
+  },
+  {
+    "id": "osm_3d_buildings",
+    "cat": "basemap",
+    "title": "OSM 3D Buildings",
+    "desc": "Geometrische 3D-Gebäudeumrisse",
+    "tags": [
+      "Vector Tiles",
+      "0 Cost"
+    ],
+    "link": "https://osmbuildings.org/"
+  },
+  {
+    "id": "overpass_api_osm",
+    "cat": "osint",
+    "title": "Overpass API (OSM)",
+    "desc": "Beliebige OSM-Features abfragen (POIs, Gebäude, etc.)",
+    "tags": [
+      "JSON",
+      "XML",
+      "0 Cost"
+    ],
+    "link": "https://overpass-api.de/"
+  },
+  {
+    "id": "natural_earth",
+    "cat": "osint",
+    "title": "Natural Earth",
+    "desc": "Ländergrenzen, Gewässer, Städte als Geodaten",
+    "tags": [
+      "GeoJSON",
+      "Shapefile",
+      "0 Cost"
+    ],
+    "link": "https://www.naturalearthdata.com/"
+  },
+  {
+    "id": "gadm",
+    "cat": "osint",
+    "title": "GADM",
+    "desc": "Administrative Grenzen aller Länder (alle Ebenen)",
+    "tags": [
+      "GeoJSON",
+      "Shapefile",
+      "0 Cost"
+    ],
+    "link": "https://gadm.org/"
+  },
+  {
+    "id": "us_census_tigerweb",
+    "cat": "osint",
+    "title": "US Census TIGERweb",
+    "desc": "US-Zensus-Grenzen, Straßen, Gewässer",
+    "tags": [
+      "WMS",
+      "WFS",
+      "0 Cost"
+    ],
+    "link": "https://tigerweb.geo.census.gov/"
+  },
+  {
+    "id": "usda_ers_map_services",
+    "cat": "osint",
+    "title": "USDA ERS Map Services",
+    "desc": "25+ Kartendienste zu Ernährung, ländl. Raum (US)",
+    "tags": [
+      "WMS",
+      "REST",
+      "0 Cost"
+    ],
+    "link": "https://www.ers.usda.gov/developer/geospatial-apis"
+  },
+  {
+    "id": "noaa_ncep_ocean",
+    "cat": "naval",
+    "title": "NOAA NCEP Ocean",
+    "desc": "Meerestemperatur, Strömungen, Wellenhöhe",
+    "tags": [
+      "WMS",
+      "0 Cost"
+    ],
+    "link": "https://www.weather.gov/gis/cloudgiswebservices"
+  },
+  {
+    "id": "emodnet",
+    "cat": "naval",
+    "title": "EMODnet",
+    "desc": "EU-Meeresdaten: Bathymetrie, Habitate, Geologie",
+    "tags": [
+      "WMS",
+      "WFS",
+      "0 Cost"
+    ],
+    "link": "https://emodnet.ec.europa.eu/"
+  },
+  {
+    "id": "windy_webcams_api",
+    "cat": "cctv",
+    "title": "Windy Webcams API",
+    "desc": "65.000+ Webcams weltweit mit Koordinaten, Kategorien, Bildern",
+    "tags": [
+      "REST API (JSON)",
+      "Freemium"
+    ],
+    "link": "https://api.windy.com/webcams",
+    "implemented": true
+  },
+  {
+    "id": "autobahn_api__webcams_de",
+    "cat": "cctv",
+    "title": "Autobahn API – Webcams (DE)",
+    "desc": "Webcams auf allen deutschen Autobahnen (Bund-API)",
+    "tags": [
+      "REST API (JSON)",
+      "0 Cost"
+    ],
+    "link": "https://autobahn.api.bund.dev/"
+  },
+  {
+    "id": "asfinag_webcams_at",
+    "cat": "cctv",
+    "title": "ASFINAG Webcams (AT)",
+    "desc": "1.000+ Webcams auf Österreichs Autobahnen & Schnellstraßen",
+    "tags": [
+      "Web (kein offizielles API)",
+      "0 Cost"
+    ],
+    "link": "https://www.asfinag.at/verkehr-sicherheit/webcams/"
+  },
+  {
+    "id": "tfl_jamcams_london",
+    "cat": "cctv",
+    "title": "TfL JamCams (London)",
+    "desc": "Echtzeit-Verkehrskameras in London (Transport for London)",
+    "tags": [
+      "REST API (JSON)",
+      "0 Cost"
+    ],
+    "link": "https://api.tfl.gov.uk/"
+  },
+  {
+    "id": "us_dot_traffic_cameras",
+    "cat": "cctv",
+    "title": "US DOT Traffic Cameras",
+    "desc": "Verkehrskameras diverser US-Bundesstaaten (z.B. Ohio, Caltrans)",
+    "tags": [
+      "REST API (JSON)"
+    ],
+    "link": "https://github.com/topics/traffic-cameras"
+  },
+  {
+    "id": "tomtom_traffic_flow_tiles",
+    "cat": "traffic",
+    "title": "TomTom Traffic Flow Tiles",
+    "desc": "Echtzeit-Verkehrsfluss als Raster- oder Vektor-Tiles (weltweit)",
+    "tags": [
+      "XYZ Tiles",
+      "PBF",
+      "Freemium"
+    ],
+    "link": "https://developer.tomtom.com/traffic-api/"
+  },
+  {
+    "id": "tomtom_traffic_incidents",
+    "cat": "traffic",
+    "title": "TomTom Traffic Incidents",
+    "desc": "Staus, Unfälle, Baustellen als Tile-Layer oder JSON",
+    "tags": [
+      "XYZ Tiles",
+      "JSON",
+      "Freemium"
+    ],
+    "link": "https://developer.tomtom.com/traffic-api/"
+  },
+  {
+    "id": "here_traffic_tiles",
+    "cat": "traffic",
+    "title": "HERE Traffic Tiles",
+    "desc": "Echtzeit-Stau/Verkehr als farbcodierte Karten-Tiles",
+    "tags": [
+      "XYZ Tiles",
+      "Freemium"
+    ],
+    "link": "https://developer.here.com/documentation/map-tile/dev_guide/topics/traffic-tiles.html"
+  },
+  {
+    "id": "autobahn_api__warnungen_de",
+    "cat": "traffic",
+    "title": "Autobahn API – Warnungen (DE)",
+    "desc": "Verkehrswarnungen, Stau, Unfälle auf dt. Autobahnen",
+    "tags": [
+      "REST API (JSON)",
+      "0 Cost"
+    ],
+    "link": "https://autobahn.api.bund.dev/"
+  },
+  {
+    "id": "autobahn_api__sperrungen_de",
+    "cat": "traffic",
+    "title": "Autobahn API – Sperrungen (DE)",
+    "desc": "Aktuelle Sperrungen auf deutschen Autobahnen",
+    "tags": [
+      "REST API (JSON)",
+      "0 Cost"
+    ],
+    "link": "https://autobahn.api.bund.dev/"
+  },
+  {
+    "id": "autobahn_api__baustellen_de",
+    "cat": "traffic",
+    "title": "Autobahn API – Baustellen (DE)",
+    "desc": "Aktuelle Baustellen auf deutschen Autobahnen",
+    "tags": [
+      "REST API (JSON)",
+      "0 Cost"
+    ],
+    "link": "https://autobahn.api.bund.dev/"
+  },
+  {
+    "id": "mapbox_traffic_tiles",
+    "cat": "traffic",
+    "title": "Mapbox Traffic (Tiles)",
+    "desc": "Verkehrsfluss-Daten als Vektor-Tiles",
+    "tags": [
+      "Vector Tiles",
+      "Freemium"
+    ],
+    "link": "https://docs.mapbox.com/data/tilesets/reference/mapbox-traffic-v1/"
+  },
+  {
+    "id": "osm_overpass__traffic_signals",
+    "cat": "traffic",
+    "title": "OSM Overpass – traffic_signals",
+    "desc": "Alle Ampeln weltweit via Overpass-Query aus OpenStreetMap",
+    "tags": [
+      "JSON",
+      "XML (Overpass)",
+      "0 Cost"
+    ],
+    "link": "https://overpass-api.de/"
+  },
+  {
+    "id": "osm_overpass__crossing_signals",
+    "cat": "traffic",
+    "title": "OSM Overpass – crossing signals",
+    "desc": "Fußgängerampeln weltweit (crossing=traffic_signals)",
+    "tags": [
+      "JSON",
+      "XML (Overpass)",
+      "0 Cost"
+    ],
+    "link": "https://overpass-api.de/"
+  },
+  {
+    "id": "autobahn_api__e_ladestationen",
+    "cat": "traffic",
+    "title": "Autobahn API – E-Ladestationen",
+    "desc": "E-Ladestationen entlang deutscher Autobahnen",
+    "tags": [
+      "REST API (JSON)",
+      "0 Cost"
+    ],
+    "link": "https://autobahn.api.bund.dev/"
+  },
+  {
+    "id": "open_charge_map",
+    "cat": "traffic",
+    "title": "Open Charge Map",
+    "desc": "Weltweit größte offene Datenbank für E-Ladestationen",
+    "tags": [
+      "REST API (JSON)",
+      "0 Cost"
+    ],
+    "link": "https://openchargemap.org/site/develop/api"
+  },
+  {
+    "id": "autobahn_api__lkw_parkplaetze",
+    "cat": "traffic",
+    "title": "Autobahn API – LKW-Parkplätze",
+    "desc": "LKW-Parkplätze entlang deutscher Autobahnen",
+    "tags": [
+      "REST API (JSON)",
+      "0 Cost"
+    ],
+    "link": "https://autobahn.api.bund.dev/"
+  },
+  {
+    "id": "acled_api",
+    "cat": "osint",
+    "title": "ACLED API",
+    "desc": "DER Standard: Politische Gewalt & Proteste, 200+ Länder, wöchentlich aktualisiert, georeferenziert",
+    "tags": [
+      "REST API",
+      "CSV",
+      "Freemium"
+    ],
+    "link": "https://acleddata.com/data/"
+  },
+  {
+    "id": "acled_via_hdx",
+    "cat": "osint",
+    "title": "ACLED via HDX",
+    "desc": "Aggregierte ACLED-Daten pro Land auf UNs Humanitarian Data Exchange",
+    "tags": [
+      "CSV",
+      "XLSX",
+      "0 Cost"
+    ],
+    "link": "https://data.humdata.org/organization/acled"
+  },
+  {
+    "id": "ucdp_ged_api",
+    "cat": "osint",
+    "title": "UCDP GED API",
+    "desc": "Uppsala Conflict Data Program – alle bewaffneten Konflikte seit 1989, georeferenziert",
+    "tags": [
+      "REST API",
+      "CSV",
+      "0 Cost"
+    ],
+    "link": "https://ucdp.uu.se/apidocs/"
+  },
+  {
+    "id": "ucdp_downloads",
+    "cat": "osint",
+    "title": "UCDP Downloads",
+    "desc": "Datasets: Battles, One-Sided Violence, Non-State Conflicts – mit Koordinaten",
+    "tags": [
+      "CSV",
+      "Excel",
+      "0 Cost"
+    ],
+    "link": "https://ucdp.uu.se/downloads/"
+  },
+  {
+    "id": "deepstatemap_ukraine",
+    "cat": "osint",
+    "title": "DeepStateMap (Ukraine)",
+    "desc": "OSINT-Frontverlaufskarte Ukraine, tägliche Updates, Truppenbewegungen",
+    "tags": [
+      "Web + interne API",
+      "0 Cost"
+    ],
+    "link": "https://deepstatemap.live/en"
+  },
+  {
+    "id": "deepstate_geojson_github",
+    "cat": "osint",
+    "title": "DeepState GeoJSON (GitHub)",
+    "desc": "Tägliche GeoJSON-Polygone der besetzten Gebiete Ukraine (auto-update)",
+    "tags": [
+      "GeoJSON",
+      "0 Cost"
+    ],
+    "link": "https://github.com/cyterat/deepstate-map-data"
+  },
+  {
+    "id": "liveuamap",
+    "cat": "osint",
+    "title": "LiveUAMap",
+    "desc": "Echtzeit-Ereigniskarte: Ukraine, Syrien, Irak, Israel – Angriffe, Explosionen",
+    "tags": [
+      "Web (API kostenpflichtig)"
+    ],
+    "link": "https://liveuamap.com/"
+  },
+  {
+    "id": "global_conflict_awareness",
+    "cat": "osint",
+    "title": "Global Conflict Awareness",
+    "desc": "Echtzeit-OSINT: US-Israel-Iran Strikes, 89 Quellen, 17 Sprachen, alle 5 Min",
+    "tags": [
+      "Web",
+      "Open Source",
+      "0 Cost"
+    ],
+    "link": "https://globalconflictawareness.com/"
+  },
+  {
+    "id": "osintmapsorg",
+    "cat": "osint",
+    "title": "OSINTMAPS.org",
+    "desc": "Dynamische Konfliktkarten: Gebietsgewinne/-verluste, Fog of War Zonen",
+    "tags": [
+      "Web",
+      "GIS",
+      "0 Cost"
+    ],
+    "link": "https://osintmaps.org/"
+  },
+  {
+    "id": "geoconfirmed",
+    "cat": "osint",
+    "title": "GeoConfirmed",
+    "desc": "Freiwillige verifizieren Videos/Fotos aus Krisengebieten mit exakten Koordinaten",
+    "tags": [
+      "Web",
+      "exportierbar",
+      "0 Cost"
+    ],
+    "link": "https://geoconfirmed.org/"
+  },
+  {
+    "id": "bellingcat_osint_toolkit",
+    "cat": "osint",
+    "title": "Bellingcat OSINT Toolkit",
+    "desc": "Interaktive Weltkarte mit OSINT-Werkzeugen pro Land (Register, Gerichte etc.)",
+    "tags": [
+      "Web",
+      "0 Cost"
+    ],
+    "link": "https://bellingcat.gitbook.io/toolkit/"
+  },
+  {
+    "id": "osint_geo_extractor_github",
+    "cat": "osint",
+    "title": "osint-geo-extractor (GitHub)",
+    "desc": "Python-Lib: Geo-Daten aus Bellingcat, GeoConfirmed, DefMon3, Texty extrahieren",
+    "tags": [
+      "Python",
+      "GeoJSON",
+      "0 Cost"
+    ],
+    "link": "https://github.com/conflict-investigations"
+  },
+  {
+    "id": "ocha_hdx_humanitarian_data",
+    "cat": "humanitarian",
+    "title": "OCHA HDX (Humanitarian Data)",
+    "desc": "18.000+ Datensätze: Flüchtlinge, Binnenvertriebene, Hunger, Konflikte pro Krise",
+    "tags": [
+      "CSV",
+      "GeoJSON",
+      "API",
+      "0 Cost"
+    ],
+    "link": "https://data.humdata.org/"
+  },
+  {
+    "id": "hdx_hapi_humanitarian_api",
+    "cat": "humanitarian",
+    "title": "HDX HAPI (Humanitarian API)",
+    "desc": "Standardisierte humanitäre Indikatoren, automatisiert abrufbar",
+    "tags": [
+      "REST API",
+      "0 Cost"
+    ],
+    "link": "https://hapi.humdata.org/"
+  },
+  {
+    "id": "reliefweb_api",
+    "cat": "humanitarian",
+    "title": "ReliefWeb API",
+    "desc": "UN OCHA: Katastrophen, Krisen, Berichte weltweit – strukturiert & durchsuchbar",
+    "tags": [
+      "REST API (JSON)",
+      "0 Cost"
+    ],
+    "link": "https://reliefweb.int/help/api"
+  },
+  {
+    "id": "unhcr_refugee_data",
+    "cat": "humanitarian",
+    "title": "UNHCR Refugee Data",
+    "desc": "Flüchtlingszahlen, Herkunfts- und Zielländer, zeitliche Verläufe",
+    "tags": [
+      "API",
+      "CSV",
+      "0 Cost"
+    ],
+    "link": "https://www.unhcr.org/refugee-statistics/"
+  },
+  {
+    "id": "beholderme",
+    "cat": "osint",
+    "title": "Beholder.me",
+    "desc": "Echtzeit 3D-Globus: 80+ OSINT-Quellen, Flüge, Schiffe, Erdbeben, Konflikte, Cyber",
+    "tags": [
+      "Web (3D Globe)",
+      "0 Cost"
+    ],
+    "link": "https://beholder.me/"
+  },
+  {
+    "id": "defcon_level_conflict_map",
+    "cat": "osint",
+    "title": "DEFCON Level Conflict Map",
+    "desc": "Globale Konfliktkarte: aktive Kriege, Spannungszonen, wöchentlich aktualisiert",
+    "tags": [
+      "Web",
+      "0 Cost"
+    ],
+    "link": "https://www.defconlevel.com/global-conflict-map"
+  },
+  {
+    "id": "russo_ukrainian_data_resources",
+    "cat": "osint",
+    "title": "Russo-Ukrainian Data Resources",
+    "desc": "GitHub-Sammlung: Alle Datenquellen zum Ukraine-Krieg (Verluste, Waffen, Frontlinien)",
+    "tags": [
+      "GitHub",
+      "Mixed",
+      "0 Cost"
+    ],
+    "link": "https://github.com/simonhuwiler/russo-ukrainian-data-ressources"
+  },
+  {
+    "id": "open_infrastructure_map",
+    "cat": "osint",
+    "title": "Open Infrastructure Map",
+    "desc": "Globale Karte kritischer Infrastruktur: Kraftwerke, Leitungen, Pipelines (aus OSM)",
+    "tags": [
+      "Web",
+      "Overpass",
+      "0 Cost"
+    ],
+    "link": "https://openinframap.org/"
+  },
+  {
+    "id": "immap__unosat_damage_assessment",
+    "cat": "osint",
+    "title": "iMMAP / UNOSAT Damage Assessment",
+    "desc": "UN-Satellitenanalyse: Gebäudeschäden in Konfliktzonen (Gaza, Ukraine, Syrien)",
+    "tags": [
+      "PDF",
+      "GeoTIFF",
+      "0 Cost"
+    ],
+    "link": "https://unosat.org/"
+  },
+  {
+    "id": "airplanes_live",
+    "cat": "aero",
+    "title": "airplanes.live",
+    "desc": "Primäre Flugdatenquelle. 6 parallele Bbox-Queries dedupliziert zu einem globalen Datensatz.",
+    "tags": [
+      "API",
+      "REST",
+      "0 Cost"
+    ],
+    "link": "https://airplanes.live/",
+    "implemented": true
+  },
+  {
+    "id": "opensky",
+    "cat": "aero",
+    "title": "OpenSky Network",
+    "desc": "OAuth2-gesicherter Fallback wenn alle primären Quellen ausfallen. Rate-limitiert auf ~1000 Calls/Tag.",
+    "tags": [
+      "API",
+      "OAuth2",
+      "Last Resort"
+    ],
+    "link": "https://opensky-network.org/",
+    "implemented": true
+  },
+  {
+    "id": "celestrak",
+    "cat": "aero",
+    "title": "CelesTrak",
+    "desc": "TLE-Daten für Satelliten. SGP4-Propagation clientseitig alle 10s. Kein Registrierungszwang.",
+    "tags": [
+      "Space",
+      "TLE/JSON",
+      "0 Cost"
+    ],
+    "link": "https://celestrak.org/",
+    "implemented": true
+  },
+  {
+    "id": "adsb_one",
+    "cat": "aero",
+    "title": "adsb.one",
+    "desc": "Community ADS-B Aggregator. Aktueller Fallback B wenn airplanes.live vom VPS geblockt wird. Kein Auth nötig.",
+    "tags": [
+      "API",
+      "REST",
+      "0 Cost"
+    ],
+    "link": "https://api.adsb.one/",
+    "implemented": true
+  },
+  {
+    "id": "adsb_exchange",
+    "cat": "aero",
+    "title": "ADS-B Exchange",
+    "desc": "Unzensierte Flugdaten inkl. Militär und Diktatoren-Jets. Kein Filtering.",
+    "tags": [
+      "API",
+      "Raw Data",
+      "0 Cost"
+    ],
+    "link": "https://adsbexchange.com/"
+  },
+  {
+    "id": "aisstream",
+    "cat": "naval",
+    "title": "AISstream.io",
+    "desc": "Globaler AIS-Stream via WebSocket. Serverseitig gecacht, Browser bekommt REST-Snapshot.",
+    "tags": [
+      "WebSocket",
+      "Realtime",
+      "MMSI"
+    ],
+    "link": "https://aisstream.io/",
+    "implemented": true
+  },
+  {
+    "id": "global_fishing",
+    "cat": "naval",
+    "title": "Global Fishing Watch",
+    "desc": "Erkennt 'Dark Targets' — Schiffe, die ihren Transponder abschalten.",
+    "tags": [
+      "API",
+      "OSINT"
+    ],
+    "link": "https://globalfishingwatch.org/our-apis/"
+  },
+  {
+    "id": "open_meteo",
+    "cat": "weather",
+    "title": "Open-Meteo",
+    "desc": "Echtzeit-Wetter ohne Key. Bis 10.000 Calls/Tag kostenlos — Alternative zu Windy Forecast.",
+    "tags": [
+      "API",
+      "0 Cost"
+    ],
+    "link": "https://open-meteo.com/"
+  },
+  {
+    "id": "emsc_quakes",
+    "cat": "nature",
+    "title": "EMSC Seismology",
+    "desc": "Echtzeit-Erdbeben weltweit via WebSocket. Schneller als USGS.",
+    "tags": [
+      "WebSocket",
+      "Realtime"
+    ],
+    "link": "https://www.emsc-csem.org/"
+  },
+  {
+    "id": "blitzortung",
+    "cat": "nature",
+    "title": "Blitzortung.org",
+    "desc": "Community-basiertes Echtzeit-Gewitter-Tracking — Blitzeinschläge weltweit.",
+    "tags": [
+      "WSS",
+      "Realtime"
+    ],
+    "link": "https://www.blitzortung.org/"
+  },
+  {
+    "id": "movebank",
+    "cat": "nature",
+    "title": "Movebank (Animal Tracking)",
+    "desc": "Live-Tracking von Haien, Adlern und Wölfen weltweit (mit GPS-Halsbändern).",
+    "tags": [
+      "API",
+      "GeoJSON"
+    ],
+    "link": "https://www.movebank.org/"
+  },
+  {
+    "id": "openaq",
+    "cat": "air_quality",
+    "title": "OpenAQ",
+    "desc": "Weltweite Sensordaten für Luftqualität: PM10, NO2, O3.",
+    "tags": [
+      "API",
+      "0 Cost",
+      "OSINT"
+    ],
+    "link": "https://openaq.org/"
+  },
+  {
+    "id": "checkpoint_threatmap",
+    "cat": "cyber",
+    "title": "Live Cyber Attack Map",
+    "desc": "Echtzeit-Visualisierung globaler DDoS- und Malware-Angriffe.",
+    "tags": [
+      "API/WSS",
+      "Cyber"
+    ],
+    "link": "https://threatmap.checkpoint.com/"
+  },
+  {
+    "id": "bitnodes",
+    "cat": "cyber",
+    "title": "Bitnodes",
+    "desc": "Geolokalisierung aller aktiven Bitcoin-Nodes weltweit.",
+    "tags": [
+      "API",
+      "Crypto"
+    ],
+    "link": "https://bitnodes.io/api/"
+  },
+  {
+    "id": "opencellid",
+    "cat": "signals",
+    "title": "OpenCelliD",
+    "desc": "Die weltweit größte offene Datenbank für GPS-Koordinaten von Handymasten.",
+    "tags": [
+      "CSV Dump",
+      "API"
+    ],
+    "link": "https://opencellid.org/"
+  },
+  {
+    "id": "mapillary",
+    "cat": "cctv",
+    "title": "Mapillary API",
+    "desc": "Computer Vision, die auf Millionen Fotos Ampeln und CCTV-Kameras erkennt.",
+    "tags": [
+      "API",
+      "Images"
+    ],
+    "link": "https://www.mapillary.com/developer"
+  },
+  {
+    "id": "mobilithek",
+    "cat": "traffic",
+    "title": "Mobilithek (DE)",
+    "desc": "Zentraler Einstieg für deutsche Mobilitätsdaten: LSA, Parkhausbelegung, Baustellen.",
+    "tags": [
+      "API",
+      "Open Data",
+      "0 Cost"
+    ],
+    "link": "https://mobilithek.info/"
+  },
+  {
+    "id": "hamburg_sensorthings",
+    "cat": "traffic",
+    "title": "Hamburg SensorThings",
+    "desc": "Sekundenaktuelle Ampelphasen (Rot/Grün) für Hamburg via OGC SensorThings API.",
+    "tags": [
+      "API",
+      "Realtime",
+      "0 Cost"
+    ],
+    "link": "https://iot.hamburg.de/v1.1/"
+  },
+  {
+    "id": "gtfs",
+    "cat": "traffic",
+    "title": "GTFS.de / Open Data ÖPNV",
+    "desc": "Echtzeit-Positionen (VehiclePositions) und Verspätungen (TripUpdates) für ÖPNV.",
+    "tags": [
+      "GTFS-RT",
+      "Open Data",
+      "0 Cost"
+    ],
+    "link": "https://gtfs.de/de/feeds/"
+  },
+  {
+    "id": "transport_rest",
+    "cat": "traffic",
+    "title": "Transport.rest (HAFAS)",
+    "desc": "Einfache JSON-API für DB, VBB, HVV und mehr. Kein Key nötig.",
+    "tags": [
+      "API",
+      "0 Cost"
+    ],
+    "link": "https://v6.db.transport.rest/"
+  }
+]

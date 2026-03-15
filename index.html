@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniVision — Open Intelligence</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/hud.css">
+  <link rel="stylesheet" href="css/panels.css">
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    /* 3-way toggle: mode2 = dot+radius active */
+    .toggle.mode2 {
+      background: linear-gradient(135deg, #ff8800, #ff4444) !important;
+      border-color: #ff8800 !important;
+      box-shadow: 0 0 6px rgba(255,136,0,0.5) !important;
+    }
+    .toggle.mode2::after {
+      transform: translateX(14px) !important;
+      background: #fff !important;
+    }
+    /* Small label showing ●/◎ next to zone toggles */
+    .toggle-mode-label {
+      font-size: 10px;
+      color: #4a6070;
+      margin-right: 6px;
+      min-width: 12px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Map + Globe canvas -->
+  <div id="canvas-container"></div>
+  <div id="map-container"><div id="windy" style="width:100%;height:100%"></div></div>
+
+  <!-- Visual FX -->
+  <div class="scanlines"></div>
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="logo">Omni<span>Vision</span></div>
+    <div class="live-label">
+      <div class="status-dot"></div>
+      LIVE OSINT FEED
+    </div>
+    <div class="view-toggle">
+      <button class="view-btn active" id="btn-globe" onclick="App.setView('globe')">3D Globe</button>
+      <button class="view-btn" id="btn-map" onclick="App.setView('map')">2D Map</button>
+    </div>
+    <button class="view-btn" id="btn-rotate" onclick="App.toggleRotation()">⟳ ROTATE</button>
+    <button id="btn-weather" onclick="App.toggleWeather()">⛅ WEATHER</button>
+    <div class="timestamp" id="clock">—</div>
+    <div class="panel-btns">
+      <button class="panel-btn active" id="pbtn-info"   onclick="App.togglePanelBtn('panel-left','pbtn-info')"  title="Signal Intelligence">i</button>
+      <button class="panel-btn active" id="pbtn-layers" onclick="App.togglePanelBtn('panel-right','pbtn-layers')" title="Layers">L</button>
+      <button class="panel-btn active" id="pbtn-coords" onclick="App.togglePanelBtn('panel-coords','pbtn-coords')" title="Position Intel">T</button>
+    </div>
+  </header>
+
+  <!-- Stats Panel -->
+  <aside class="panel panel-left" id="panel-left">
+    <div class="panel-title">Signal Intelligence</div>
+    <div class="stat-row">
+      <span class="stat-label">Aircraft tracked</span>
+      <span class="stat-value green" id="ac-count">—</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Ships (AIS)</span>
+      <span class="stat-value green" id="ship-count">—</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">GPS Jam zones</span>
+      <span class="stat-value red" id="jam-count">—</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Satellites vis.</span>
+      <span class="stat-value yellow" id="sat-count">—</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Data sources</span>
+      <span class="stat-value">6 active</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Flights src</span>
+      <span class="stat-value yellow" id="api-status-flights">SIM</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Sats src</span>
+      <span class="stat-value yellow" id="api-status-satellites">SIM</span>
+    </div>
+  </aside>
+
+  <!-- Layer Controls -->
+  <aside class="panel panel-right" id="panel-right">
+    <div class="panel-title">Layers</div>
+
+    <div class="layer-item" onclick="App.toggleLayer('flights')">
+      <div class="layer-dot" style="background:#00ffe0;box-shadow:0 0 6px #00ffe0"></div>
+      <span class="layer-name">Flights</span>
+      <span class="layer-hint" data-tip="Globe shows ~1.5k of 10k+ flights&#10;for performance. 2D map shows all." onclick="event.stopPropagation()">?</span>
+      <div class="toggle on" id="toggle-flights"></div>
+    </div>
+
+    <div id="flight-filters" style="display:none" onclick="event.stopPropagation()">
+      <button class="as-chip on" onclick="App.toggleFlightTypeFilter('commercial',this)">
+        <span class="as-dot" style="background:#00ffe0"></span>COMMERCIAL
+      </button>
+      <button class="as-chip on" onclick="App.toggleFlightTypeFilter('cargo',this)">
+        <span class="as-dot" style="background:#f5a623"></span>CARGO
+      </button>
+      <button class="as-chip on" onclick="App.toggleFlightTypeFilter('military',this)">
+        <span class="as-dot" style="background:#ff4444"></span>MILITARY
+      </button>
+      <button class="as-chip on" onclick="App.toggleFlightTypeFilter('private',this)">
+        <span class="as-dot" style="background:#888888"></span>PRIVATE
+      </button>
+      <div class="alt-range-wrap">
+        <div class="alt-range-labels">
+          <span id="alt-min-label">0</span>
+          <span style="color:#555570;font-size:9px">ALTITUDE</span>
+          <span id="alt-max-label">MAX</span>
+        </div>
+        <div class="alt-range-track" id="alt-range-track">
+          <input type="range" id="alt-min" min="0" max="60000" step="1000" value="0"
+            oninput="App.setAltMin(+this.value)">
+          <input type="range" id="alt-max" min="0" max="60000" step="1000" value="60000"
+            oninput="App.setAltMax(+this.value)">
+        </div>
+      </div>
+    </div>
+
+    <div class="layer-item" onclick="App.toggleLayer('ships')">
+      <div class="layer-dot" style="background:#4488ff;box-shadow:0 0 6px #4488ff"></div>
+      <span class="layer-name">Maritime</span>
+      <span class="layer-hint" data-tip="Live AIS via AISstream WebSocket.&#10;Globe thinned for performance, 2D map shows all." onclick="event.stopPropagation()">?</span>
+      <div class="toggle on" id="toggle-ships"></div>
+    </div>
+
+    <div id="ship-filters" style="display:none" onclick="event.stopPropagation()">
+      <button class="as-chip on" onclick="App.toggleShipFilter('Cargo',this)">
+        <span class="as-dot" style="background:#4488ff"></span>Cargo
+      </button>
+      <button class="as-chip on" onclick="App.toggleShipFilter('Tanker',this)">
+        <span class="as-dot" style="background:#ff8844"></span>Tanker
+      </button>
+      <button class="as-chip on" onclick="App.toggleShipFilter('Passenger',this)">
+        <span class="as-dot" style="background:#44ffaa"></span>Passenger
+      </button>
+      <button class="as-chip on" onclick="App.toggleShipFilter('Fishing',this)">
+        <span class="as-dot" style="background:#ffdd44"></span>Fishing
+      </button>
+      <button class="as-chip on" onclick="App.toggleShipFilter('Sailing',this)">
+        <span class="as-dot" style="background:#cc88ff"></span>Sailing
+      </button>
+      <button class="as-chip on" onclick="App.toggleShipFilter('Tug',this)">
+        <span class="as-dot" style="background:#ff4488"></span>Tug/SAR
+      </button>
+      <button class="as-chip on" onclick="App.toggleShipFilter('Vessel',this)">
+        <span class="as-dot" style="background:#888888"></span>Other
+      </button>
+    </div>
+
+    <div class="layer-item" onclick="App.toggleLayer('satellites')">
+      <div class="layer-dot" style="background:#ffd700;box-shadow:0 0 6px #ffd700"></div>
+      <span class="layer-name">Satellites</span>
+      <span class="layer-hint" data-tip="~150 objects via CelesTrak TLEs.&#10;SGP4 propagated every 10s." onclick="event.stopPropagation()">?</span>
+      <div class="toggle on" id="toggle-satellites"></div>
+    </div>
+
+    <div class="layer-item" onclick="App.toggleLayer('jamming')">
+      <div class="layer-dot" style="background:#ff4444;box-shadow:0 0 6px #ff4444"></div>
+      <span class="layer-name">GPS Jamming</span>
+      <span class="layer-hint" data-tip="Static reference zones&#10;(Baghdad, Syria, Gaza, Belgorod, Kaliningrad)." onclick="event.stopPropagation()">?</span>
+      <div class="toggle on" id="toggle-jamming"></div>
+    </div>
+
+    <div id="jamming-filters" style="display:none" onclick="event.stopPropagation()">
+      <button class="as-chip on" onclick="App.toggleJammingFilter('combat',this)">
+        <span class="as-dot" style="background:#ff2222"></span>COMBAT
+      </button>
+      <button class="as-chip on" onclick="App.toggleJammingFilter('border',this)">
+        <span class="as-dot" style="background:#ff8800"></span>BORDER
+      </button>
+      <button class="as-chip on" onclick="App.toggleJammingFilter('strat',this)">
+        <span class="as-dot" style="background:#aa00ff"></span>STRAT
+      </button>
+    </div>
+
+    <div class="layer-item" onclick="App.toggleLayer('webcams')" id="layer-webcams" style="opacity:0.4">
+      <div class="layer-dot" style="background:#ff69b4;box-shadow:0 0 6px #ff69b4"></div>
+      <span class="layer-name">Webcams</span>
+      <span class="layer-hint" data-tip="Windy API · 2D map only.&#10;Zoom + pan to load local cams.&#10;More cameras visible when zoomed in." onclick="event.stopPropagation()">?</span>
+      <div class="toggle off" id="toggle-webcams"></div>
+    </div>
+
+    <div class="layer-item" onclick="App.toggleLayer('airspace')" id="layer-airspace" style="opacity:0.4">
+      <div class="layer-dot" style="background:#6644aa;box-shadow:0 0 6px #6644aa"></div>
+      <span class="layer-name">Airspace <small style="color:#4a6070">2D</small></span>
+      <span class="layer-hint" data-tip="OpenAIP data · 2D map only.&#10;RESTR=Danger/Restricted  CTRL=CTR/TMA&#10;FIR=FIR/UIR  CLASS=A–G&#10;Cached 24h — loads instantly." onclick="event.stopPropagation()">?</span>
+      <div class="toggle off" id="toggle-airspace"></div>
+    </div>
+
+    <div id="airspace-filters" style="display:none" onclick="event.stopPropagation()">
+      <button class="as-chip on" onclick="App.toggleAirspaceFilter('restr',this)">
+        <span class="as-dot" style="background:#ff2222"></span>RESTR
+      </button>
+      <button class="as-chip on" onclick="App.toggleAirspaceFilter('ctrl',this)">
+        <span class="as-dot" style="background:#44aaff"></span>CTRL
+      </button>
+      <button class="as-chip on" onclick="App.toggleAirspaceFilter('fir',this)">
+        <span class="as-dot" style="background:#8855bb"></span>FIR
+      </button>
+      <button class="as-chip on" onclick="App.toggleAirspaceFilter('class',this)">
+        <span class="as-dot" style="background:#22cc44"></span>CLASS
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- Map zoom hint — shown/hidden by map.js -->
+  <div id="map-hint" style="display:none">
+    <span id="map-hint-text"></span>
+    <button id="map-hint-action" style="display:none"></button>
+  </div>
+
+  <!-- Hover Tooltip — minimal -->
+  <div id="tooltip">
+    <div class="tip-callsign" id="tip-name">—</div>
+    <div class="tip-row"><span>Origin</span><span id="tip-origin">—</span></div>
+  </div>
+
+  <!-- Flight Detail Panel — shown on click -->
+  <div id="flight-panel">
+    <div id="flight-panel-close" onclick="App.deselectFlight()">✕</div>
+    <div id="fp-callsign">—</div>
+    <div id="fp-airline">—</div>
+    <div class="fp-divider"></div>
+    <div class="fp-row"><span>FROM</span><span id="fp-dep">—</span></div>
+    <div class="fp-row"><span>TO</span><span id="fp-arr">—</span></div>
+    <div class="fp-divider"></div>
+    <div class="fp-row"><span>Speed</span><span id="fp-speed">—</span></div>
+    <div class="fp-row"><span>Altitude</span><span id="fp-alt">—</span></div>
+    <div class="fp-row"><span>Country</span><span id="fp-country">—</span></div>
+    <div class="fp-row"><span>ICAO24</span><span id="fp-icao">—</span></div>
+    <div class="fp-divider"></div>
+    <div class="fp-row"><span>Source</span><span id="fp-src">ADS-B</span></div>
+    <div id="fp-loading" class="fp-loading">
+      <span class="fp-spinner"></span> Loading route data…
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <footer class="bottombar">
+    DATA:
+    <span>ADS-B Exchange</span> ·
+    <span>MarineTraffic</span> ·
+    <span>CelesTrak</span> ·
+    <span>GPSJam</span> ·
+    <span>NORAD</span>
+    &nbsp;|&nbsp; Drag to rotate · Scroll to zoom
+    <a href="checklist.html" class="roadmap-link">⬡ FEATURES / ROADMAP</a>
+  </footer>
+
+
+  <!-- Weather Panel -->
+  <div id="weather-panel"></div>
+
+  <!-- Position Intel Panel (bottom-right) -->
+  <aside id="panel-coords">
+    <div class="panel-title">Position Intel</div>
+    <div class="pc-row">
+      <span class="pc-label">Coords</span>
+      <span id="coords-display">—</span>
+    </div>
+    <div class="pc-row" id="pc-airspace-row" style="display:none">
+      <span class="pc-label">Airspace</span>
+      <span id="airspace-region-label"></span>
+    </div>
+  </aside>
+
+  <!-- App Modules (order matters) -->
+  <script src="js/data.js"></script>
+  <script src="js/globe.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/hud.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

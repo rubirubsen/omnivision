@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniVision — Roadmap</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: #1e1e2e;
+      --accent: #00ffe0;
+      --accent2: #7b61ff;
+      --text: #c9d1d9;
+      --muted: #555570;
+      --font: 'Space Mono', 'Courier New', monospace;
+
+      /* Category colours */
+      --col-aero:        #f5a623;   /* Flightradar yellow  */
+      --col-naval:       #89cff0;   /* baby blue           */
+      --col-nature:      #4ade80;   /* nature green        */
+      --col-cyber:       #ff4d4d;   /* alert red           */
+      --col-signals:     #c084fc;   /* violet              */
+      --col-cctv:        #fb923c;   /* amber               */
+      --col-traffic:     #22d3ee;   /* cyan / teal         */
+      --col-weather:     #93c5fd;   /* sky blue            */
+      --col-basemap:     #a0a0b0;   /* neutral grey        */
+      --col-satellite:   #a78bfa;   /* purple              */
+      --col-air_quality: #86efac;   /* mint                */
+      --col-osint:       #f87171;   /* intel red           */
+      --col-humanitarian:#fbbf24;   /* warm amber          */
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 13px;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 32px 40px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    header h1 {
+      font-size: 20px;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    header p {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.05em;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 16px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .filter-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font);
+      font-size: 11px;
+      padding: 4px 12px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover  { border-color: var(--btn-color, var(--accent)); color: var(--btn-color, var(--accent)); }
+    .filter-btn.active { border-color: var(--btn-color, var(--accent)); color: var(--btn-color, var(--accent)); background: color-mix(in srgb, var(--btn-color, var(--accent)) 8%, transparent); }
+
+    .filter-btn[data-cat="aero"]        { --btn-color: var(--col-aero);        }
+    .filter-btn[data-cat="naval"]       { --btn-color: var(--col-naval);       }
+    .filter-btn[data-cat="nature"]      { --btn-color: var(--col-nature);      }
+    .filter-btn[data-cat="cyber"]       { --btn-color: var(--col-cyber);       }
+    .filter-btn[data-cat="signals"]     { --btn-color: var(--col-signals);     }
+    .filter-btn[data-cat="cctv"]        { --btn-color: var(--col-cctv);        }
+    .filter-btn[data-cat="traffic"]     { --btn-color: var(--col-traffic);     }
+    .filter-btn[data-cat="weather"]     { --btn-color: var(--col-weather);     }
+    .filter-btn[data-cat="basemap"]     { --btn-color: var(--col-basemap);     }
+    .filter-btn[data-cat="satellite"]   { --btn-color: var(--col-satellite);   }
+    .filter-btn[data-cat="air_quality"] { --btn-color: var(--col-air_quality); }
+    .filter-btn[data-cat="osint"]       { --btn-color: var(--col-osint);       }
+    .filter-btn[data-cat="humanitarian"]{ --btn-color: var(--col-humanitarian);}
+    .filter-btn[data-cat="__liked__"]   { --btn-color: #ff6b6b; }
+    .back-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #ff4444;
+      text-decoration: none;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      animation: roadmap-pulse 1.8s ease-in-out infinite;
+    }
+    .back-link:hover { color: #ff8888; }
+    @keyframes roadmap-pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.35; }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      padding: 1px;
+      margin: 24px 40px;
+    }
+
+    .card {
+      background: var(--surface);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: background 0.15s;
+      border-top: 2px solid var(--cat-color, var(--border));
+      box-shadow: inset 0 40px 60px -30px color-mix(in srgb, var(--cat-color, transparent) 6%, transparent);
+    }
+    .card:hover {
+      background: #14141f;
+      box-shadow: inset 0 40px 60px -30px color-mix(in srgb, var(--cat-color, transparent) 10%, transparent);
+    }
+
+    .card[data-cat="aero"]        { --cat-color: var(--col-aero);        }
+    .card[data-cat="naval"]       { --cat-color: var(--col-naval);       }
+    .card[data-cat="nature"]      { --cat-color: var(--col-nature);      }
+    .card[data-cat="cyber"]       { --cat-color: var(--col-cyber);       }
+    .card[data-cat="signals"]     { --cat-color: var(--col-signals);     }
+    .card[data-cat="cctv"]        { --cat-color: var(--col-cctv);        }
+    .card[data-cat="traffic"]     { --cat-color: var(--col-traffic);     }
+    .card[data-cat="weather"]     { --cat-color: var(--col-weather);     }
+    .card[data-cat="basemap"]     { --cat-color: var(--col-basemap);     }
+    .card[data-cat="satellite"]   { --cat-color: var(--col-satellite);   }
+    .card[data-cat="air_quality"] { --cat-color: var(--col-air_quality); }
+    .card[data-cat="osint"]       { --cat-color: var(--col-osint);       }
+    .card[data-cat="humanitarian"]{ --cat-color: var(--col-humanitarian);}
+
+    /* IMPLEMENTED badge */
+    .badge-impl {
+      font-size: 9px;
+      font-family: var(--font);
+      letter-spacing: 0.1em;
+      color: #00ff88;
+      border: 1px solid #00ff8855;
+      padding: 2px 7px;
+      text-shadow: 0 0 8px #00ff88cc;
+      box-shadow: 0 0 6px #00ff8833;
+      white-space: nowrap;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .card-title {
+      font-size: 13px;
+      color: #e0e0f0;
+      font-weight: bold;
+      letter-spacing: 0.04em;
+    }
+    .card-cat {
+      font-size: 9px;
+      color: var(--cat-color, var(--muted));
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      white-space: nowrap;
+      border: 1px solid color-mix(in srgb, var(--cat-color, var(--border)) 40%, transparent);
+      padding: 2px 6px;
+    }
+    .card-desc {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      font-size: 10px;
+      padding: 2px 8px;
+      border: 1px solid var(--border);
+      color: #7b61ff;
+      letter-spacing: 0.06em;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .card-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+    }
+    .card-link:hover { text-decoration: underline; }
+
+    .like-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font);
+      font-size: 11px;
+      padding: 3px 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.05em;
+    }
+    .like-btn:hover   { border-color: #ff6b6b; color: #ff6b6b; }
+    .like-btn.liked   { border-color: #ff6b6b; color: #ff6b6b; background: rgba(255,107,107,0.08); }
+    .card-footer:has(.badge-impl) .like-btn { display: none; }
+
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--muted);
+      padding: 60px;
+      letter-spacing: 0.1em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>// OmniVision — Data Source Roadmap</h1>
+  <p>Geplante Integrationen &amp; OSINT-Datenquellen · Click ♥ um für eine Integration zu voten</p>
+  <a href="index.html" class="back-link">&laquo; LIVE MAP</a>
+</header>
+
+<div class="filter-bar">
+  <button class="filter-btn active" data-cat="all">All</button>
+  <button class="filter-btn" data-cat="__implemented__">✓ Live</button>
+  <button class="filter-btn" data-cat="__liked__">♥ Liked</button>
+  <button class="filter-btn" data-cat="aero">Aero</button>
+  <button class="filter-btn" data-cat="naval">Naval</button>
+  <button class="filter-btn" data-cat="weather">Weather</button>
+  <button class="filter-btn" data-cat="nature">Nature</button>
+  <button class="filter-btn" data-cat="satellite">Satellite</button>
+  <button class="filter-btn" data-cat="basemap">Basemap</button>
+  <button class="filter-btn" data-cat="traffic">Traffic</button>
+  <button class="filter-btn" data-cat="cctv">CCTV</button>
+  <button class="filter-btn" data-cat="cyber">Cyber</button>
+  <button class="filter-btn" data-cat="signals">Signals</button>
+  <button class="filter-btn" data-cat="air_quality">Air Quality</button>
+  <button class="filter-btn" data-cat="osint">OSINT</button>
+  <button class="filter-btn" data-cat="humanitarian">Humanitarian</button>
+</div>
+
+<div class="grid" id="grid">
+  <div class="empty">Loading...</div>
+</div>
+
+<footer>OmniVision OSINT Dashboard · Data sources are for research &amp; educational use only</footer>
+
+<script>
+  const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:3001'
+    : '';
+
+  let items   = [];
+  let likes   = {};
+  let liked   = JSON.parse(localStorage.getItem('wv_liked') || '{}');
+  let current = 'all';
+
+  async function load() {
+    try {
+      const [rm, lk] = await Promise.all([
+        fetch(API + '/api/roadmap').then(r => r.json()),
+        fetch(API + '/api/likes').then(r => r.json()),
+      ]);
+      items = rm;
+      likes = lk;
+      render();
+    } catch (e) {
+      document.getElementById('grid').innerHTML = '<div class="empty">Could not reach proxy — is it running?</div>';
+    }
+  }
+
+  function render() {
+    const filtered = current === '__implemented__'
+      ? items.filter(i => i.implemented)
+      : current === '__liked__' ? items.filter(i => (likes[i.id] || 0) > 0)
+      : current === 'all' ? items : items.filter(i => i.cat === current);
+    const grid = document.getElementById('grid');
+    if (!filtered.length) {
+      grid.innerHTML = '<div class="empty">No items in this category.</div>';
+      return;
+    }
+    grid.innerHTML = filtered.map(item => {
+      const count     = likes[item.id] || 0;
+      const isHot     = count > 10;
+      const likeLabel = isHot ? `HOT🔥` : `♥ ${count}`;
+      const implBadge = item.implemented
+        ? `<span class="badge-impl">✓ IMPLEMENTED</span>` : '';
+      return `
+      <div class="card" data-id="${item.id}" data-cat="${item.cat}">
+        <div class="card-header">
+          <span class="card-title">${item.title}</span>
+          <span class="card-cat">${item.cat}</span>
+        </div>
+        <div class="card-desc">${item.desc}</div>
+        <div class="card-tags">${item.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+        <div class="card-footer">
+          <a class="card-link" href="${item.link}" target="_blank" rel="noopener">↗ docs</a>
+          ${implBadge}
+          <button class="like-btn ${liked[item.id] ? 'liked' : ''}" data-id="${item.id}">
+            ${likeLabel}
+          </button>
+        </div>
+      </div>`;
+    }).join('');
+
+    grid.querySelectorAll('.like-btn').forEach(btn => {
+      btn.addEventListener('click', () => doLike(btn.dataset.id));
+    });
+  }
+
+  async function doLike(id) {
+    if (liked[id]) return; // already liked
+    try {
+      const r = await fetch(API + '/api/likes/' + id, { method: 'POST' });
+      const d = await r.json();
+      likes[id] = d.likes;
+      liked[id] = true;
+      localStorage.setItem('wv_liked', JSON.stringify(liked));
+      render();
+    } catch (e) {}
+  }
+
+  document.querySelector('.filter-bar').addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    current = btn.dataset.cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+    render();
+  });
+
+  load();
+</script>
+</body>
+</html>
