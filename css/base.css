@@ -53,15 +53,75 @@ body.dragging {
 }
 
 /* Containers */
-#canvas-container,
-#map-container {
+#canvas-container {
   position: fixed;
   inset: 0;
   z-index: 0;
 }
 
+/* Map container is inset from viewport edges and has cyberpunk cut corners
+   (top-left and bottom-right). clip-path clips the Leaflet tile content;
+   #map-frame (below) provides the visible border that follows the same polygon. */
 #map-container {
+  position: fixed;
+  inset: 1vh 1vw;
+  z-index: 0;
   display: none; /* shown via App.setView() */
+  clip-path: polygon(
+    28px 0%,           /* top-left cut */
+    100% 0%,
+    100% calc(100% - 28px),
+    calc(100% - 28px) 100%, /* bottom-right cut */
+    0% 100%,
+    0% 28px
+  );
+}
+
+/* Decorative border overlay that traces the clipped polygon shape.
+   Separate element so the border is never itself clipped.
+   z-index 8 sits above the map canvas (0) but below HUD panels (10+). */
+#map-frame {
+  position: fixed;
+  inset: 1vh 1vw;
+  pointer-events: none;
+  z-index: 8;
+  display: none; /* shown via App.setView() alongside #map-container */
+  border: 1px solid rgba(0, 255, 224, 0.35);
+  box-shadow:
+    inset 0 0 60px rgba(0, 255, 224, 0.04),
+    inset 0 0 0 1px rgba(0, 255, 224, 0.05);
+  clip-path: polygon(
+    28px 0%,
+    100% 0%,
+    100% calc(100% - 28px),
+    calc(100% - 28px) 100%,
+    0% 100%,
+    0% 28px
+  );
+}
+
+/* Accent tick marks at the two cut corner points.
+   32px offset gives a small gap from the actual clip vertex. */
+#map-frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 32px;
+  width: 16px;
+  height: 2px;
+  background: var(--accent);
+  opacity: 0.7;
+}
+
+#map-frame::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 32px;
+  width: 16px;
+  height: 2px;
+  background: var(--accent);
+  opacity: 0.7;
 }
 
 #windy {

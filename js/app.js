@@ -173,6 +173,7 @@ var App = (function() {
     HUD.setActiveView('map');
     var globeEl = document.getElementById('canvas-container');
     var mapEl   = document.getElementById('map-container');
+    var frameEl = document.getElementById('map-frame');
     globeEl.style.transition = 'opacity 0.5s';
     globeEl.style.opacity    = '0';
     await new Promise(function(r){ setTimeout(r, 500); });
@@ -180,6 +181,7 @@ var App = (function() {
     globeEl.style.opacity    = '1';
     globeEl.style.transition = '';
     mapEl.style.display = 'block';
+    if (frameEl) frameEl.style.display = 'block';
     Map2D.init(mapEl, lat, lon, 6);
     Map2D.populate(flights, ships, satellites, Data.jammingZones);
     Map2D.invalidate();
@@ -191,18 +193,21 @@ var App = (function() {
     if (view === currentView) return;
     currentView = view;
     HUD.setActiveView(view);
-    var globeEl = document.getElementById('canvas-container');
-    var mapEl   = document.getElementById('map-container');
+    var globeEl  = document.getElementById('canvas-container');
+    var mapEl    = document.getElementById('map-container');
+    var frameEl  = document.getElementById('map-frame');
     if (view === 'map') {
-      globeEl.style.display = 'none';
-      mapEl.style.display   = 'block';
+      globeEl.style.display  = 'none';
+      mapEl.style.display    = 'block';
+      if (frameEl) frameEl.style.display = 'block';
       Map2D.init(mapEl);
       Map2D.populate(flights, ships, satellites, Data.jammingZones);
       Map2D.invalidate();
       _syncMapLayers();
     } else {
-      mapEl.style.display   = 'none';
-      globeEl.style.display = 'block';
+      mapEl.style.display    = 'none';
+      if (frameEl) frameEl.style.display = 'none';
+      globeEl.style.display  = 'block';
       Globe.refresh();  // force re-render in case _needsRender was false while map was shown
     }
   }

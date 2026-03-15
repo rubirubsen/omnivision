@@ -421,6 +421,7 @@ var Map2D = (() => {
     leafletMap = L.map('windy', {
       center          : [centerLat, centerLon],
       zoom            : centerZoom,
+      minZoom         : 3,      // prevents zooming out past a single world tile copy
       zoomControl     : false,
       attributionControl: false,
       preferCanvas    : true,   // tells Leaflet to prefer canvas for vector layers
@@ -429,6 +430,7 @@ var Map2D = (() => {
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       subdomains: 'abcd',
       maxZoom   : 19,
+      noWrap    : true,         // prevents repeated world copies on horizontal scroll
     }).addTo(leafletMap);
 
     // Shared canvas renderer for ships + satellites (one <canvas> for all)
