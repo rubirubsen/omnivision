@@ -118,7 +118,9 @@ var App = (function() {
     return flights.filter(function(f) {
       var alt = f.alt || 0;
       if (alt < flightAlt.min || alt > flightAlt.max) return false;
-      return flightTypeFilter[_classifyFlight(f)] !== false;
+      var type = _classifyFlight(f);
+      f._type = type;
+      return flightTypeFilter[type] !== false;
     });
   }
 

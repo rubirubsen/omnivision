@@ -50,6 +50,216 @@ var Map2D = (() => {
     SAR: '#ff4488', Pilot: '#ff9900', Pleasure: '#ff8844', Vessel: '#8899aa',
   };
 
+  const FLIGHT_COLORS = {
+    commercial: '#00ffe0',
+    cargo     : '#f5a623',
+    military  : '#ff4444',
+    private   : '#888888',
+  };
+
+  function _drawFlightShape(ctx, s, type) {
+    switch (type) {
+      case 'military':
+        // Fighter silhouette: narrow fuselage, swept delta wings, twin tail
+        ctx.beginPath(); // fuselage
+        ctx.moveTo(0, -s * 0.9);
+        ctx.lineTo(s * 0.08, -s * 0.45);
+        ctx.lineTo(s * 0.1, s * 0.35);
+        ctx.lineTo(s * 0.06, s * 0.9);
+        ctx.lineTo(-s * 0.06, s * 0.9);
+        ctx.lineTo(-s * 0.1, s * 0.35);
+        ctx.lineTo(-s * 0.08, -s * 0.45);
+        ctx.closePath(); ctx.fill();
+        ctx.beginPath(); // delta wings
+        ctx.moveTo(s * 0.08, -s * 0.05);
+        ctx.lineTo(s * 0.92, s * 0.55);
+        ctx.lineTo(s * 0.5, s * 0.65);
+        ctx.lineTo(s * 0.1, s * 0.3);
+        ctx.lineTo(-s * 0.1, s * 0.3);
+        ctx.lineTo(-s * 0.5, s * 0.65);
+        ctx.lineTo(-s * 0.92, s * 0.55);
+        ctx.lineTo(-s * 0.08, -s * 0.05);
+        ctx.closePath(); ctx.fill();
+        ctx.beginPath(); // twin tail fins
+        ctx.moveTo(s * 0.06, s * 0.52);
+        ctx.lineTo(s * 0.34, s * 0.72);
+        ctx.lineTo(s * 0.34, s * 0.88);
+        ctx.lineTo(s * 0.06, s * 0.84);
+        ctx.closePath(); ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(-s * 0.06, s * 0.52);
+        ctx.lineTo(-s * 0.34, s * 0.72);
+        ctx.lineTo(-s * 0.34, s * 0.88);
+        ctx.lineTo(-s * 0.06, s * 0.84);
+        ctx.closePath(); ctx.fill();
+        break;
+
+      case 'cargo':
+        // Heavy freighter: wide fuselage, high-mounted wings, wide T-tail
+        ctx.beginPath(); // wide fuselage
+        ctx.ellipse(0, 0, s * 0.27, s * 0.65, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath(); // wings — straighter, broader chord
+        ctx.moveTo(-s * 0.2, -s * 0.08);
+        ctx.lineTo(-s * 0.95, s * 0.18);
+        ctx.lineTo(-s * 0.78, s * 0.4);
+        ctx.lineTo(0, s * 0.1);
+        ctx.lineTo(s * 0.78, s * 0.4);
+        ctx.lineTo(s * 0.95, s * 0.18);
+        ctx.lineTo(s * 0.2, -s * 0.08);
+        ctx.closePath(); ctx.fill();
+        ctx.beginPath(); // wide horizontal stabiliser
+        ctx.moveTo(-s * 0.2, s * 0.5);
+        ctx.lineTo(-s * 0.55, s * 0.7);
+        ctx.lineTo(-s * 0.38, s * 0.84);
+        ctx.lineTo(0, s * 0.68);
+        ctx.lineTo(s * 0.38, s * 0.84);
+        ctx.lineTo(s * 0.55, s * 0.7);
+        ctx.lineTo(s * 0.2, s * 0.5);
+        ctx.closePath(); ctx.fill();
+        break;
+
+      case 'private':
+        // Small biz-jet / GA: slim fuselage, straight wings, small tail
+        ctx.beginPath(); // slim fuselage
+        ctx.ellipse(0, 0, s * 0.14, s * 0.52, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath(); // straight wings
+        ctx.moveTo(-s * 0.1, -s * 0.05);
+        ctx.lineTo(-s * 0.78, s * 0.08);
+        ctx.lineTo(-s * 0.66, s * 0.28);
+        ctx.lineTo(0, s * 0.12);
+        ctx.lineTo(s * 0.66, s * 0.28);
+        ctx.lineTo(s * 0.78, s * 0.08);
+        ctx.lineTo(s * 0.1, -s * 0.05);
+        ctx.closePath(); ctx.fill();
+        ctx.beginPath(); // small tail
+        ctx.moveTo(-s * 0.08, s * 0.38);
+        ctx.lineTo(-s * 0.3, s * 0.6);
+        ctx.lineTo(-s * 0.12, s * 0.66);
+        ctx.lineTo(0, s * 0.54);
+        ctx.lineTo(s * 0.12, s * 0.66);
+        ctx.lineTo(s * 0.3, s * 0.6);
+        ctx.lineTo(s * 0.08, s * 0.38);
+        ctx.closePath(); ctx.fill();
+        break;
+
+      default: // commercial — current Boeing-like shape
+        ctx.beginPath();
+        ctx.ellipse(0, 0, s * 0.2, s * 0.6, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(-s * 0.15, -s * 0.1);
+        ctx.lineTo(-s * 0.85,  s * 0.25);
+        ctx.lineTo(-s * 0.65,  s * 0.4);
+        ctx.lineTo( 0,          s * 0.15);
+        ctx.lineTo( s * 0.65,  s * 0.4);
+        ctx.lineTo( s * 0.85,  s * 0.25);
+        ctx.lineTo( s * 0.15, -s * 0.1);
+        ctx.closePath(); ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(-s * 0.15, s * 0.45);
+        ctx.lineTo(-s * 0.4,  s * 0.75);
+        ctx.lineTo(-s * 0.15, s * 0.7);
+        ctx.lineTo( 0,         s * 0.6);
+        ctx.lineTo( s * 0.15, s * 0.7);
+        ctx.lineTo( s * 0.4,  s * 0.75);
+        ctx.lineTo( s * 0.15, s * 0.45);
+        ctx.closePath(); ctx.fill();
+    }
+  }
+
+  function _drawShipShape(ctx, sz, type) {
+    // All shapes: bow pointing UP (negative Y). sz = iconSize.
+    ctx.beginPath();
+    switch (type) {
+      case 'Tanker':
+        // Long, parallel-sided hull — cylindrical silhouette
+        ctx.moveTo(0,          -sz * 0.9);
+        ctx.lineTo( sz * 0.42, -sz * 0.52);
+        ctx.lineTo( sz * 0.44,  sz * 0.55);
+        ctx.lineTo( sz * 0.26,  sz * 0.9);
+        ctx.lineTo(-sz * 0.26,  sz * 0.9);
+        ctx.lineTo(-sz * 0.44,  sz * 0.55);
+        ctx.lineTo(-sz * 0.42, -sz * 0.52);
+        break;
+      case 'Cargo':
+        // Boxy, bulbous bow, flat stern
+        ctx.moveTo(0,          -sz * 0.88);
+        ctx.lineTo( sz * 0.36, -sz * 0.58);
+        ctx.lineTo( sz * 0.42, -sz * 0.18);
+        ctx.lineTo( sz * 0.42,  sz * 0.58);
+        ctx.lineTo( sz * 0.28,  sz * 0.9);
+        ctx.lineTo(-sz * 0.28,  sz * 0.9);
+        ctx.lineTo(-sz * 0.42,  sz * 0.58);
+        ctx.lineTo(-sz * 0.42, -sz * 0.18);
+        ctx.lineTo(-sz * 0.36, -sz * 0.58);
+        break;
+      case 'Passenger':
+        // Streamlined cruise shape, narrow bow and stern
+        ctx.moveTo(0,          -sz * 0.92);
+        ctx.lineTo( sz * 0.28, -sz * 0.42);
+        ctx.lineTo( sz * 0.38,  sz * 0.08);
+        ctx.lineTo( sz * 0.28,  sz * 0.62);
+        ctx.lineTo( sz * 0.14,  sz * 0.92);
+        ctx.lineTo(-sz * 0.14,  sz * 0.92);
+        ctx.lineTo(-sz * 0.28,  sz * 0.62);
+        ctx.lineTo(-sz * 0.38,  sz * 0.08);
+        ctx.lineTo(-sz * 0.28, -sz * 0.42);
+        break;
+      case 'Fishing':
+        // Short and wide, wide midship
+        ctx.moveTo(0,          -sz * 0.75);
+        ctx.lineTo( sz * 0.44, -sz * 0.22);
+        ctx.lineTo( sz * 0.44,  sz * 0.32);
+        ctx.lineTo( sz * 0.3,   sz * 0.75);
+        ctx.lineTo(-sz * 0.3,   sz * 0.75);
+        ctx.lineTo(-sz * 0.44,  sz * 0.32);
+        ctx.lineTo(-sz * 0.44, -sz * 0.22);
+        break;
+      case 'Sailing':
+        // Very narrow, elongated keel shape
+        ctx.moveTo(0,          -sz * 0.95);
+        ctx.lineTo( sz * 0.16, -sz * 0.28);
+        ctx.lineTo( sz * 0.18,  sz * 0.52);
+        ctx.lineTo( sz * 0.1,   sz * 0.95);
+        ctx.lineTo(-sz * 0.1,   sz * 0.95);
+        ctx.lineTo(-sz * 0.18,  sz * 0.52);
+        ctx.lineTo(-sz * 0.16, -sz * 0.28);
+        break;
+      case 'Pleasure':
+        // Speedboat V-hull — pointed bow, wide square stern
+        ctx.moveTo(0,           -sz * 0.95);
+        ctx.lineTo( sz * 0.26,  -sz * 0.28);
+        ctx.lineTo( sz * 0.44,   sz * 0.38);
+        ctx.lineTo( sz * 0.44,   sz * 0.78);
+        ctx.lineTo(-sz * 0.44,   sz * 0.78);
+        ctx.lineTo(-sz * 0.44,   sz * 0.38);
+        ctx.lineTo(-sz * 0.26,  -sz * 0.28);
+        break;
+      case 'Tug': case 'SAR':
+        // Short, stocky, very wide relative to length
+        ctx.moveTo(0,           -sz * 0.68);
+        ctx.lineTo( sz * 0.48,  -sz * 0.18);
+        ctx.lineTo( sz * 0.5,    sz * 0.28);
+        ctx.lineTo( sz * 0.36,   sz * 0.68);
+        ctx.lineTo(-sz * 0.36,   sz * 0.68);
+        ctx.lineTo(-sz * 0.5,    sz * 0.28);
+        ctx.lineTo(-sz * 0.48,  -sz * 0.18);
+        break;
+      default: // Vessel, Pilot, etc.
+        ctx.moveTo(0,          -sz * 0.9);
+        ctx.lineTo( sz * 0.35, -sz * 0.4);
+        ctx.lineTo( sz * 0.4,   sz * 0.5);
+        ctx.lineTo( sz * 0.2,   sz * 0.9);
+        ctx.lineTo(-sz * 0.2,   sz * 0.9);
+        ctx.lineTo(-sz * 0.4,   sz * 0.5);
+        ctx.lineTo(-sz * 0.35, -sz * 0.4);
+    }
+    ctx.closePath();
+    ctx.fill();
+  }
+
   // ---- Layer visibility flags (ships/flights use canvas layers instead) ----
   const layerGroups = {
     flights      : null,  // canvas layer — see _flightCanvas
@@ -199,39 +409,13 @@ var Map2D = (() => {
         ctx.translate(pt.x, pt.y);
         ctx.rotate(hdg);
 
-        // Plane silhouette — scaled to iconSize
-        const s = iconSize;
-        ctx.fillStyle    = f._selected ? '#ff4444' : COLORS.flights;
+        const flightType  = f._type || 'commercial';
+        const flightColor = f._selected ? '#ffd700' : (FLIGHT_COLORS[flightType] || COLORS.flights);
+        ctx.fillStyle    = flightColor;
         ctx.globalAlpha  = 0.92;
         ctx.shadowBlur   = zoom >= 6 ? 4 : 0;
-        ctx.shadowColor  = COLORS.flights;
-
-        ctx.beginPath();
-        // Fuselage
-        ctx.ellipse(0, 0, s * 0.2, s * 0.6, 0, 0, Math.PI * 2);
-        ctx.fill();
-        // Wings
-        ctx.beginPath();
-        ctx.moveTo(-s * 0.15, -s * 0.1);
-        ctx.lineTo(-s * 0.85,  s * 0.25);
-        ctx.lineTo(-s * 0.65,  s * 0.4);
-        ctx.lineTo( 0,          s * 0.15);
-        ctx.lineTo( s * 0.65,  s * 0.4);
-        ctx.lineTo( s * 0.85,  s * 0.25);
-        ctx.lineTo( s * 0.15, -s * 0.1);
-        ctx.closePath();
-        ctx.fill();
-        // Tail
-        ctx.beginPath();
-        ctx.moveTo(-s * 0.15, s * 0.45);
-        ctx.lineTo(-s * 0.4,  s * 0.75);
-        ctx.lineTo(-s * 0.15, s * 0.7);
-        ctx.lineTo( 0,         s * 0.6);
-        ctx.lineTo( s * 0.15, s * 0.7);
-        ctx.lineTo( s * 0.4,  s * 0.75);
-        ctx.lineTo( s * 0.15, s * 0.45);
-        ctx.closePath();
-        ctx.fill();
+        ctx.shadowColor  = flightColor;
+        _drawFlightShape(ctx, iconSize, flightType);
 
         ctx.restore();
 
@@ -353,19 +537,7 @@ var Map2D = (() => {
           const hdg = ((s.heading != null && s.heading !== 511 ? s.heading : s.course) || 0) * Math.PI / 180;
           ctx.translate(pt.x, pt.y);
           ctx.rotate(hdg);
-
-          const sz = iconSize;
-          // Ship silhouette — top-down view, bow pointing up (north before rotation)
-          ctx.beginPath();
-          ctx.moveTo(0,        -sz * 0.9);   // bow tip
-          ctx.lineTo( sz * 0.35, -sz * 0.4); // bow starboard shoulder
-          ctx.lineTo( sz * 0.4,   sz * 0.5); // stern starboard
-          ctx.lineTo( sz * 0.2,   sz * 0.9); // stern starboard corner
-          ctx.lineTo(-sz * 0.2,   sz * 0.9); // stern port corner
-          ctx.lineTo(-sz * 0.4,   sz * 0.5); // stern port
-          ctx.lineTo(-sz * 0.35, -sz * 0.4); // bow port shoulder
-          ctx.closePath();
-          ctx.fill();
+          _drawShipShape(ctx, iconSize, s.type || 'Vessel');
         }
 
         ctx.restore();
