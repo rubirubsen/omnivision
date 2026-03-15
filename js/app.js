@@ -6,9 +6,10 @@ var jammingFilter = { combat: true, border: true, strat: true };
 
 var App = (function() {
 
-  var flights    = [];
-  var ships      = [];
-  var satellites = [];
+  var flights         = [];
+  var ships           = [];
+  var satellites      = [];
+  var _shipsFiltered  = [];  // cached result of _filteredShips(), kept in sync
   var currentView = 'globe';
   var t           = 0;
   var rotating    = false;
@@ -140,10 +141,10 @@ var App = (function() {
   function _onLiveShips(liveData) {
     if (!liveData || !liveData.length) return;
     ships = liveData;
-    var filtered = _filteredShips();
-    Globe.populateLayer('ships', _thinForGlobe(filtered, 3));
-    if (currentView === 'map') Map2D.populateLayer('ships', filtered);
-    HUD.updateStats({ flights: flights, ships: filtered, jammingZones: Data.jammingZones, satellites: satellites });
+    _shipsFiltered = _filteredShips();
+    Globe.populateLayer('ships', _thinForGlobe(_shipsFiltered, 3));
+    if (currentView === 'map') Map2D.populateLayer('ships', _shipsFiltered);
+    HUD.updateStats({ flights: flights, ships: _shipsFiltered, jammingZones: Data.jammingZones, satellites: satellites });
   }
 
   function _onLiveSatellites(liveData) {
@@ -162,8 +163,8 @@ var App = (function() {
     requestAnimationFrame(_loop);
     t += 0.016;
     Data.tick(ships);
-    Globe.syncPositions(flights, ships, satellites);
-    if (currentView === 'map') Map2D.syncPositions(flights, ships, satellites);
+    Globe.syncPositions(flights, _shipsFiltered, satellites);
+    if (currentView === 'map') Map2D.syncPositions(flights, _shipsFiltered, satellites);
     Globe.render(t);
   }
 
@@ -300,10 +301,10 @@ var App = (function() {
     var newState = !shipFilter[types[0]];
     types.forEach(function(t) { shipFilter[t] = newState; });
     if (btn) btn.classList.toggle('on', newState);
-    var filtered = _filteredShips();
-    Globe.populateLayer('ships', _thinForGlobe(filtered, 3));
-    if (currentView === 'map') Map2D.populateLayer('ships', filtered);
-    HUD.updateStats({ flights: flights, ships: filtered, jammingZones: Data.jammingZones, satellites: satellites });
+    _shipsFiltered = _filteredShips();
+    Globe.populateLayer('ships', _thinForGlobe(_shipsFiltered, 3));
+    if (currentView === 'map') Map2D.populateLayer('ships', _shipsFiltered);
+    HUD.updateStats({ flights: flights, ships: _shipsFiltered, jammingZones: Data.jammingZones, satellites: satellites });
   }
 
   function toggleFlightTypeFilter(type, btn) {
