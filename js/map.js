@@ -138,8 +138,8 @@ var Map2D = (() => {
       this._canvas = document.createElement('canvas');
       // Mount directly on map container — NOT overlayPane.
       // overlayPane gets CSS-transformed during pan which causes clipping.
-      this._canvas.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:400';
-      map.getContainer().appendChild(this._canvas);
+      this._canvas.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none';
+      (map.getPane('flightCanvas') || map.getContainer()).appendChild(this._canvas);
       this._resize();
 
       // Arrow functions keep `this` — avoids Leaflet context binding issues
@@ -154,7 +154,7 @@ var Map2D = (() => {
     },
 
     onRemove(map) {
-      map.getContainer().removeChild(this._canvas);
+      (map.getPane('flightCanvas') || map.getContainer()).removeChild(this._canvas);
       map.off('moveend zoomend', this._boundRedraw);
       map.off('resize', this._boundResize);
       window.removeEventListener('resize', this._boundResize);
@@ -282,8 +282,8 @@ var Map2D = (() => {
     onAdd(map) {
       this._map    = map;
       this._canvas = document.createElement('canvas');
-      this._canvas.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:399';
-      map.getContainer().appendChild(this._canvas);
+      this._canvas.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none';
+      (map.getPane('shipCanvas') || map.getContainer()).appendChild(this._canvas);
       this._resize();
 
       this._boundRedraw = () => this._redraw();
@@ -299,7 +299,7 @@ var Map2D = (() => {
     },
 
     onRemove(map) {
-      map.getContainer().removeChild(this._canvas);
+      (map.getPane('shipCanvas') || map.getContainer()).removeChild(this._canvas);
       map.off('moveend zoomend', this._boundRedraw);
       map.off('resize', this._boundResize);
       window.removeEventListener('resize', this._boundResize);
@@ -449,11 +449,20 @@ var Map2D = (() => {
     // Satellites use LayerGroup with canvas-rendered markers
     layerGroups.satellites = L.layerGroup().addTo(leafletMap);
 
-    // Flights: custom canvas layer (z-index 400)
+    // Canvas panes — direct children of container (not mapPane), so they don't
+    // get the Leaflet pan/zoom CSS transform. z-index sits between tile-pane (200)
+    // and overlay-pane (400) for ships, above overlay-pane for flights.
+    leafletMap.createPane('shipCanvas', leafletMap.getContainer());
+    leafletMap.getPane('shipCanvas').style.cssText += ';z-index:390;pointer-events:none';
+
+    leafletMap.createPane('flightCanvas', leafletMap.getContainer());
+    leafletMap.getPane('flightCanvas').style.cssText += ';z-index:401;pointer-events:none';
+
+    // Flights: custom canvas layer (z-index managed by flightCanvas pane)
     _flightCanvas = new FlightCanvasLayer();
     _flightCanvas.addTo(leafletMap);
 
-    // Ships: custom canvas layer (z-index 399, below flights)
+    // Ships: custom canvas layer (z-index managed by shipCanvas pane, below flights)
     _shipCanvas = new ShipCanvasLayer();
     _shipCanvas.addTo(leafletMap);
 
