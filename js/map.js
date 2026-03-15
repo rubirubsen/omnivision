@@ -45,9 +45,9 @@ var Map2D = (() => {
   const _satMarkers  = new Map();   // id → L.circleMarker
 
   const SHIP_COLORS = {
-    Cargo: '#4488ff', Tanker: '#ff8844', Passenger: '#44ffaa',
+    Cargo: '#4488ff', Tanker: '#ff4444', Passenger: '#44ffaa',
     Fishing: '#ffdd44', Sailing: '#cc88ff', Tug: '#ff4488',
-    SAR: '#ff4488', Pilot: '#ff9900', Vessel: '#8899aa',
+    SAR: '#ff4488', Pilot: '#ff9900', Pleasure: '#ff8844', Vessel: '#8899aa',
   };
 
   // ---- Layer visibility flags (ships/flights use canvas layers instead) ----
