@@ -1,5 +1,7 @@
 node_modules/
 .env
+.env.ftp
 .tile-cache/
 *.log
 credentials.json
+.claude/agent-memory/
