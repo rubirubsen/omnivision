@@ -392,9 +392,7 @@ var App = (function() {
       if (f._destLoaded) {
         HUD.updateFlightRoute(f.departure, f.destination);
       } else {
-        API.fetchDestination(f).then(function() {
-          if (_selectedFlight === f) HUD.updateFlightRoute(f.departure, f.destination);
-        });
+        HUD.updateFlightRoute('—', '—');
       }
     });
     canvas.addEventListener('mouseleave', function() { HUD.hideTooltip(); });

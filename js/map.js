@@ -322,8 +322,8 @@ var Map2D = (() => {
       if (!_shipVisible || !_shipData.length) return;
 
       const zoom      = this._map.getZoom();
-      // Minimum size 6 — old circles were 8px diameter, keep roughly same hit area
-      const iconSize  = zoom >= 8 ? 12 : zoom >= 6 ? 9 : zoom >= 4 ? 7 : 6;
+      const iconSize  = zoom >= 8 ? 12 : zoom >= 6 ? 9 : zoom >= 4 ? 7 : 4;
+      const useDot    = zoom < 4;   // at world zoom, silhouettes are sub-pixel — use glowing dots
       const showLabel = zoom >= 10;
       const pad       = 40;
 
@@ -338,29 +338,35 @@ var Map2D = (() => {
         // Type → color (exact match first, then fallback)
         const color = SHIP_COLORS[s.type] || SHIP_COLORS.Vessel;
 
-        const hdg = ((s.heading != null && s.heading !== 511 ? s.heading : s.course) || 0) * Math.PI / 180;
-
         ctx.save();
-        ctx.translate(pt.x, pt.y);
-        ctx.rotate(hdg);
-
-        const sz = iconSize;
-        ctx.fillStyle   = color;
         ctx.globalAlpha = 0.9;
-        ctx.shadowBlur  = 5;        // glow at all zoom levels so ships are visible
+        ctx.shadowBlur  = useDot ? 6 : 5;
         ctx.shadowColor = color;
+        ctx.fillStyle   = color;
 
-        // Ship silhouette — top-down view, bow pointing up (north before rotation)
-        ctx.beginPath();
-        ctx.moveTo(0,        -sz * 0.9);   // bow tip
-        ctx.lineTo( sz * 0.35, -sz * 0.4); // bow starboard shoulder
-        ctx.lineTo( sz * 0.4,   sz * 0.5); // stern starboard
-        ctx.lineTo( sz * 0.2,   sz * 0.9); // stern starboard corner
-        ctx.lineTo(-sz * 0.2,   sz * 0.9); // stern port corner
-        ctx.lineTo(-sz * 0.4,   sz * 0.5); // stern port
-        ctx.lineTo(-sz * 0.35, -sz * 0.4); // bow port shoulder
-        ctx.closePath();
-        ctx.fill();
+        if (useDot) {
+          // Simple glowing dot — visible at world zoom
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, 3, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          const hdg = ((s.heading != null && s.heading !== 511 ? s.heading : s.course) || 0) * Math.PI / 180;
+          ctx.translate(pt.x, pt.y);
+          ctx.rotate(hdg);
+
+          const sz = iconSize;
+          // Ship silhouette — top-down view, bow pointing up (north before rotation)
+          ctx.beginPath();
+          ctx.moveTo(0,        -sz * 0.9);   // bow tip
+          ctx.lineTo( sz * 0.35, -sz * 0.4); // bow starboard shoulder
+          ctx.lineTo( sz * 0.4,   sz * 0.5); // stern starboard
+          ctx.lineTo( sz * 0.2,   sz * 0.9); // stern starboard corner
+          ctx.lineTo(-sz * 0.2,   sz * 0.9); // stern port corner
+          ctx.lineTo(-sz * 0.4,   sz * 0.5); // stern port
+          ctx.lineTo(-sz * 0.35, -sz * 0.4); // bow port shoulder
+          ctx.closePath();
+          ctx.fill();
+        }
 
         ctx.restore();
 
