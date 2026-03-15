@@ -13,12 +13,12 @@ var App = (function() {
   var t           = 0;
   var rotating    = false;
 
-  // Binary layer state (true = visible)
+  // Layer state: booleans for binary layers, number (0/1/2) for 3-way zone toggles
   var layerState = {
     flights   : true,
     ships     : true,
     satellites: true,
-    jamming   : true,
+    jamming   : 1,    // 0=off, 1=dot only, 2=dot+radius
     webcams   : false,
     airspace  : false,
   };
@@ -71,7 +71,7 @@ var App = (function() {
     var map = {
       'flight-filters' : layerState.flights,
       'ship-filters'   : layerState.ships,
-      'jamming-filters': layerState.jamming,
+      'jamming-filters': layerState.jamming > 0,
     };
     Object.keys(map).forEach(function(id) {
       var el = document.getElementById(id);
@@ -83,7 +83,8 @@ var App = (function() {
   // Push all current state values to HUD toggle indicators
   function _syncAllToggleUI() {
     Object.keys(layerState).forEach(function(name) {
-      HUD.setToggleState(name, layerState[name] ? 1 : 0);
+      var val = layerState[name];
+      HUD.setToggleState(name, typeof val === 'number' ? val : (val ? 1 : 0));
     });
   }
 
@@ -92,8 +93,7 @@ var App = (function() {
     ['flights', 'ships', 'satellites'].forEach(function(name) {
       if (!layerState[name]) Map2D.toggleLayer(name);
     });
-    // Jamming: binary — map uses mode 1 (dot) when on, 0 when off
-    Map2D.setZoneMode('jamming', layerState.jamming ? 1 : 0);
+    Map2D.setZoneMode('jamming', layerState.jamming);
     if (layerState.webcams)  Map2D.toggleLayer('webcams');
     if (layerState.airspace) Map2D.toggleLayer('airspace');
   }
@@ -250,12 +250,14 @@ var App = (function() {
     }
 
     if (name === 'jamming') {
-      layerState.jamming = !layerState.jamming;
-      HUD.setToggleState('jamming', layerState.jamming ? 1 : 0);
-      Globe.toggleLayer('jamming');
-      if (currentView === 'map') Map2D.setZoneMode('jamming', layerState.jamming ? 1 : 0);
+      var prev = layerState.jamming;
+      layerState.jamming = (layerState.jamming + 1) % 3;
+      HUD.setToggleState('jamming', layerState.jamming);
+      if (prev === 0) Globe.toggleLayer('jamming');           // 0→1: turn on
+      if (layerState.jamming === 0) Globe.toggleLayer('jamming'); // 2→0: turn off
+      if (currentView === 'map') Map2D.setZoneMode('jamming', layerState.jamming);
       var filtersEl = document.getElementById('jamming-filters');
-      if (filtersEl) filtersEl.style.display = layerState.jamming ? '' : 'none';
+      if (filtersEl) filtersEl.style.display = layerState.jamming > 0 ? '' : 'none';
       return;
     }
 

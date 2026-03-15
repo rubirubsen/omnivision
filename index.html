@@ -21,27 +21,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <style>
-    /* 3-way toggle: mode2 = dot+radius active */
-    .toggle.mode2 {
-      background: linear-gradient(135deg, #ff8800, #ff4444) !important;
-      border-color: #ff8800 !important;
-      box-shadow: 0 0 6px rgba(255,136,0,0.5) !important;
-    }
-    .toggle.mode2::after {
-      transform: translateX(14px) !important;
-      background: #fff !important;
-    }
-    /* Small label showing ●/◎ next to zone toggles */
-    .toggle-mode-label {
-      font-size: 10px;
-      color: #4a6070;
-      margin-right: 6px;
-      min-width: 12px;
-      text-align: center;
-      flex-shrink: 0;
-    }
-  </style>
+
 </head>
 <body>
 
@@ -190,7 +170,8 @@
     <div class="layer-item" onclick="App.toggleLayer('jamming')">
       <div class="layer-dot" style="background:#ff4444;box-shadow:0 0 6px #ff4444"></div>
       <span class="layer-name">GPS Jamming</span>
-      <span class="layer-hint" data-tip="Static reference zones&#10;(Baghdad, Syria, Gaza, Belgorod, Kaliningrad)." onclick="event.stopPropagation()">?</span>
+      <span class="layer-hint" data-tip="Static reference zones&#10;(Baghdad, Syria, Gaza, Belgorod, Kaliningrad).&#10;● dot only  ◎ dot + radius" onclick="event.stopPropagation()">?</span>
+      <span id="toggle-label-jamming" class="toggle-mode-label">●</span>
       <div class="toggle on" id="toggle-jamming"></div>
     </div>
 

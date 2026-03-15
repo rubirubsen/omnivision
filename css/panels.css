@@ -16,7 +16,7 @@
 }
 
 .panel-left  { left: 16px; }
-.panel-right { right: 16px; width: 200px; }
+.panel-right { right: 16px; /* width inherits 220px from .panel base rule */ }
 
 .panel-title {
   font-size: 9px;
@@ -64,7 +64,7 @@
 
 #coords-display {
   color: var(--accent);
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.05em;
   text-align: right;
@@ -72,7 +72,7 @@
 
 #airspace-region-label {
   color: rgba(102,68,170,0.9);
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.08em;
   text-align: right;
@@ -110,8 +110,8 @@
   background: none;
   border: 1px solid rgba(255,255,255,0.1);
   color: rgba(200,216,232,0.35);
-  font-family: 'Space Mono', monospace;
-  font-size: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px; /* was 8px — below legibility threshold for interactive labels */
   letter-spacing: 0.08em;
   padding: 2px 7px 2px 5px;
   cursor: pointer;
@@ -146,7 +146,7 @@
   justify-content: space-between;
   align-items: center;
   font-size: 9px;
-  color: #00ffe0;
+  color: var(--accent);
   letter-spacing: 0.06em;
   margin-bottom: 6px;
 }
@@ -154,7 +154,7 @@
   position: relative;
   height: 4px;
   border-radius: 2px;
-  background: linear-gradient(to right, #1a1a2e 0%, #00ffe0 0%, #00ffe0 100%, #1a1a2e 100%);
+  background: linear-gradient(to right, #1a1a2e 0%, var(--accent) 0%, var(--accent) 100%, #1a1a2e 100%);
   margin: 10px 0;
 }
 .alt-range-track input[type=range] {
@@ -175,8 +175,8 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #00ffe0;
-  box-shadow: 0 0 6px #00ffe088;
+  background: var(--accent);
+  box-shadow: 0 0 6px #00ffe088; /* semi-transparent glow — must stay literal; no alpha on custom props in plain CSS */
   border: 2px solid #0a0a0f;
   pointer-events: all;
   cursor: ew-resize;
@@ -185,8 +185,8 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #00ffe0;
-  box-shadow: 0 0 6px #00ffe088;
+  background: var(--accent);
+  box-shadow: 0 0 6px #00ffe088; /* semi-transparent glow — must stay literal */
   border: 2px solid #0a0a0f;
   pointer-events: all;
   cursor: ew-resize;
@@ -199,10 +199,12 @@
   gap: 10px;
   margin-bottom: 10px;
   cursor: pointer;
-  transition: opacity var(--transition);
+  transition: background var(--transition);
   user-select: none;
 }
-.layer-item:hover { opacity: 0.75; }
+/* Background highlight on hover — matches .wf-row:hover pattern.
+   Previously used opacity: 0.75 which read as "disabled" rather than "focused". */
+.layer-item:hover { background: rgba(0, 255, 224, 0.04); }
 
 .layer-dot {
   width: 8px; height: 8px;
@@ -243,6 +245,27 @@
 .toggle.on::after  { right: 2px;  background: var(--accent); }
 .toggle.off::after { left: 2px;   background: var(--dim); }
 
+/* 3-way toggle: mode2 state = dot + radius active (GPS jamming layer) */
+.toggle.mode2 {
+  background: linear-gradient(135deg, #ff8800, var(--accent2)) !important;
+  border-color: #ff8800 !important;
+  box-shadow: 0 0 6px rgba(255,136,0,0.5) !important;
+}
+.toggle.mode2::after {
+  transform: translateX(14px) !important;
+  background: #fff !important;
+}
+
+/* Small ●/◎ mode indicator label next to zone toggles */
+.toggle-mode-label {
+  font-size: 10px;
+  color: var(--dim);
+  margin-right: 6px;
+  min-width: 12px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
 /* Airspace / webcam loading pulse */
 @keyframes dot-pulse {
   0%, 100% { opacity: 1; box-shadow: 0 0 6px currentColor; }
@@ -262,7 +285,7 @@
   text-align: center;
   flex-shrink: 0;
   cursor: default;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   transition: border-color 0.2s, color 0.2s;
 }
 .layer-hint:hover {
@@ -302,7 +325,7 @@
   border: 1px solid rgba(0,255,224,0.2);
   color: #c8d8e8;
   font-size: 11px;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   padding: 8px 14px;
   display: flex;
   align-items: center;
@@ -317,7 +340,7 @@
   background: none;
   border: 1px solid rgba(255,105,180,0.5);
   color: #ff69b4;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   padding: 3px 8px;
   cursor: pointer;
@@ -332,23 +355,27 @@
 #weather-panel {
   position: fixed;
   top: 50%;
-  left: -380px;
-  transform: translateY(-50%);
+  left: 0;
+  /* Slide hidden state: translateX(-100%) moves panel fully off left edge.
+     Vertical centering uses a separate translateY(-50%).
+     Previously animated `left` (layout-triggering); transform runs on the
+     compositor thread with no layout cost. */
+  transform: translateX(-100%) translateY(-50%);
   width: 340px;
   max-height: 80vh;
   background: rgba(2, 8, 16, 0.96);
   border: 1px solid rgba(0,255,224,0.18);
   border-left: none;
   box-shadow: 4px 0 30px rgba(0,0,0,0.6), inset 0 0 40px rgba(0,255,224,0.02);
-  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 120;
   display: flex;
   flex-direction: column;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   overflow: hidden;
 }
 
-#weather-panel.open { left: 0; }
+#weather-panel.open { transform: translateX(0) translateY(-50%); }
 
 .wp-header {
   display: flex;
@@ -362,7 +389,7 @@
   font-size: 11px;
   font-weight: bold;
   letter-spacing: 2px;
-  color: #00ffe0;
+  color: var(--accent);
   flex: 1;
 }
 
@@ -378,7 +405,7 @@
   padding: 0 2px;
   transition: color 0.2s;
 }
-.wp-close:hover { color: #00ffe0; }
+.wp-close:hover { color: var(--accent); }
 
 .wp-tabs {
   display: flex;
@@ -392,7 +419,7 @@
   border: none;
   border-bottom: 2px solid transparent;
   color: rgba(0,255,224,0.4);
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   cursor: pointer;
   transition: all 0.2s;
@@ -401,8 +428,8 @@
 
 .wp-tab:hover { color: rgba(0,255,224,0.7); }
 .wp-tab.active {
-  color: #00ffe0;
-  border-bottom-color: #00ffe0;
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 .wp-content {
@@ -436,7 +463,7 @@
 .wf-wind { color: #7ab8cc; display: flex; align-items: center; gap: 4px; }
 .wf-wdir {
   display: inline-block;
-  color: #00ffe0;
+  color: var(--accent);
   font-size: 12px;
   transition: transform 0.3s;
 }
@@ -490,7 +517,7 @@
   background: rgba(0,255,224,0.06);
   border: 1px solid rgba(0,255,224,0.15);
   color: #4a6070;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   padding: 3px 8px;
   cursor: pointer;
@@ -498,7 +525,7 @@
   transition: all 0.15s;
 }
 .wm-btn:hover  { border-color: rgba(0,255,224,0.4); color: #c8d8e8; }
-.wm-btn.active { border-color: #00ffe0; color: #00ffe0; background: rgba(0,255,224,0.12); }
+.wm-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(0,255,224,0.12); }
 .wm-info {
   padding: 8px 10px;
   color: #4a6070;
@@ -530,7 +557,7 @@
   margin-top: 12px;
   padding: 5px 12px;
   border: 1px solid rgba(0,255,224,0.3);
-  color: #00ffe0;
+  color: var(--accent);
   text-decoration: none;
   font-size: 9px;
   letter-spacing: 1px;
@@ -545,20 +572,4 @@
   text-align: right;
 }
 
-/* Weather toggle button in HUD */
-#btn-weather {
-  background: none;
-  border: 1px solid rgba(0,255,224,0.2);
-  color: rgba(0,255,224,0.5);
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  padding: 4px 10px;
-  cursor: pointer;
-  letter-spacing: 1px;
-  transition: all 0.2s;
-}
-#btn-weather:hover, #btn-weather.active {
-  border-color: rgba(0,255,224,0.6);
-  color: #00ffe0;
-  background: rgba(0,255,224,0.06);
-}
+/* #btn-weather styles moved to css/hud.css — it is a topbar button, not a panel component */

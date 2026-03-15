@@ -151,7 +151,7 @@
 }
 .roadmap-link {
   margin-left: auto;
-  color: #ff4444;
+  color: var(--accent2); /* was hardcoded #ff4444 — matches --accent2 in :root */
   text-decoration: none;
   font-size: 10px;
   letter-spacing: 0.12em;
@@ -223,6 +223,9 @@
   cursor: pointer;
   color: var(--dim);
   font-size: 12px;
+  /* Enlarged hit target — 12px glyph alone is too small to click reliably */
+  padding: 8px;
+  margin: -8px; /* compensate so the visual position doesn't shift */
 }
 #flight-panel-close:hover { color: var(--accent); }
 
@@ -286,3 +289,21 @@
   display: inline-block;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* Weather toggle button — topbar element, belongs here alongside other topbar controls */
+#btn-weather {
+  background: none;
+  border: 1px solid rgba(0,255,224,0.2);
+  color: rgba(0,255,224,0.5);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 4px 10px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+}
+#btn-weather:hover, #btn-weather.active {
+  border-color: rgba(0,255,224,0.6);
+  color: var(--accent);
+  background: rgba(0,255,224,0.06);
+}
