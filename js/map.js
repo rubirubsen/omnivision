@@ -591,12 +591,14 @@ var Map2D = (() => {
     const centerZoom = zoomLevel !== undefined ? zoomLevel : 3;
 
     leafletMap = L.map('windy', {
-      center          : [centerLat, centerLon],
-      zoom            : centerZoom,
-      minZoom         : 3,      // prevents zooming out past a single world tile copy
-      zoomControl     : false,
-      attributionControl: false,
-      preferCanvas    : true,   // tells Leaflet to prefer canvas for vector layers
+      center               : [centerLat, centerLon],
+      zoom                 : centerZoom,
+      minZoom              : 3,
+      zoomControl          : false,
+      attributionControl   : false,
+      preferCanvas         : true,
+      maxBounds            : [[-85, -180], [85, 180]],
+      maxBoundsViscosity   : 1.0,   // hard stop at world edge — no rubber-band
     });
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {

@@ -51,12 +51,16 @@ var App = (function() {
     ships = Data.generateShips();
     Globe.init(document.getElementById('canvas-container'));
     Globe.populate(flights, ships, satellites, Data.jammingZones);
-    Globe.onMaxZoom(function(rotX, rotY) {
+    Globe.onMaxZoom(function(rotX, rotY, globeZoom) {
       var lat = -(rotX * 180 / Math.PI);
-      var lon =  (rotY * 180 / Math.PI) % 360;
+      var lon = -(rotY * 180 / Math.PI) % 360;   // negative: Three.js Y-rotation is CCW from above
       if (lon > 180)  lon -= 360;
       if (lon < -180) lon += 360;
-      _autoSwitchToMap(lat, lon);
+      // Map globe scale (0.3–1.45) to Leaflet zoom. At trigger threshold (~1.45) ≈ zoom 5.
+      // Each halving of globe scale adds ~1.5 Leaflet zoom levels.
+      var lz = Math.round(5 + Math.log2(1.45 / Math.max(globeZoom || 1, 0.15)) * 1.5);
+      lz = Math.max(4, Math.min(10, lz));
+      _autoSwitchToMap(lat, lon, lz);
     });
     HUD.startClock();
     HUD.updateStats({ flights: flights, ships: ships, jammingZones: Data.jammingZones, satellites: satellites });
@@ -170,7 +174,7 @@ var App = (function() {
     Globe.render(t);
   }
 
-  async function _autoSwitchToMap(lat, lon) {
+  async function _autoSwitchToMap(lat, lon, zoom) {
     if (currentView === 'map') return;
     currentView = 'map';
     HUD.setActiveView('map');
@@ -185,7 +189,7 @@ var App = (function() {
     globeEl.style.transition = '';
     mapEl.style.display = 'block';
     if (frameEl) frameEl.style.display = 'block';
-    Map2D.init(mapEl, lat, lon, 6);
+    Map2D.init(mapEl, lat, lon, zoom || 6);
     Map2D.populate(flights, ships, satellites, Data.jammingZones);
     Map2D.invalidate();
     _syncMapLayers();

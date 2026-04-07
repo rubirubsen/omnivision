@@ -753,7 +753,7 @@ var Globe = (function () {
     // Max-zoom trigger
     if (zoom < 1.45 && _onMaxZoom && !_maxZoomFired) {
       _maxZoomFired = true;
-      _onMaxZoom(rotX, rotY);
+      _onMaxZoom(rotX, rotY, zoom);
     }
     if (zoom >= 1.45) _maxZoomFired = false;
 
