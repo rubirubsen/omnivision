@@ -2,7 +2,9 @@
    BASE — Reset, Variables, Layout
    ===================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+/* Barlow Condensed added for panel titles, logo, and stat labels.
+   Space Mono and Syne kept for mono readouts and display text. */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600&family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
 
 :root {
   --bg:       #020408;
@@ -17,6 +19,7 @@
 
   --font-mono: 'Space Mono', monospace;
   --font-display: 'Syne', sans-serif;
+  --font-condensed: 'Barlow Condensed', sans-serif;
 
   --radius: 0px; /* sharp/military aesthetic */
   --transition: 0.2s ease;
@@ -32,7 +35,13 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: var(--bg);
+  /* Subtle cyan grid — radar-room graph paper effect.
+     48px pitch matches the tactical grid scale used in SIGINT displays. */
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(0,255,224,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,224,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
   color: var(--text);
   font-family: var(--font-mono);
 }
@@ -86,10 +95,11 @@ body.dragging {
   pointer-events: none;
   z-index: 8;
   display: none; /* shown via App.setView() alongside #map-container */
-  border: 1px solid rgba(0, 255, 224, 0.35);
+  /* Stronger glow than before — the map frame now reads as a containment boundary */
+  border: 1px solid rgba(0, 255, 224, 0.5);
   box-shadow:
-    inset 0 0 60px rgba(0, 255, 224, 0.04),
-    inset 0 0 0 1px rgba(0, 255, 224, 0.05);
+    inset 0 0 80px rgba(0, 255, 224, 0.06),
+    0 0 20px rgba(0, 255, 224, 0.08);
   clip-path: polygon(
     28px 0%,
     100% 0%,
@@ -129,26 +139,29 @@ body.dragging {
   height: 100%;
 }
 
-/* Scan-line overlay */
+/* Scan-line overlay — slightly tighter pitch and higher opacity than before
+   so the CRT texture reads on modern high-DPI displays. */
 .scanlines {
   position: fixed;
   inset: 0;
   background: repeating-linear-gradient(
     0deg,
     transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.03) 2px,
-    rgba(0, 0, 0, 0.03) 4px
+    transparent 1px,
+    rgba(0, 0, 0, 0.045) 1px,
+    rgba(0, 0, 0, 0.045) 3px
   );
   pointer-events: none;
   z-index: 5;
 }
 
-/* Corner brackets */
+/* Corner brackets — 40×40px targeting-reticle style.
+   ::before = horizontal arm (full width), ::after = vertical arm (full height).
+   Glow via filter: drop-shadow so the glow hugs the 1px line. */
 .corner {
   position: fixed;
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   pointer-events: none;
   z-index: 15;
 }
@@ -157,8 +170,10 @@ body.dragging {
   content: '';
   position: absolute;
   background: var(--accent);
-  opacity: 0.6;
+  opacity: 0.75;
+  filter: drop-shadow(0 0 3px var(--accent));
 }
+/* Horizontal arm spans full bracket width; vertical arm spans full bracket height */
 .corner::before { width: 100%; height: 1px; top: 0; left: 0; }
 .corner::after  { width: 1px; height: 100%; top: 0; left: 0; }
 

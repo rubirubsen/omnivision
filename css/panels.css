@@ -7,8 +7,14 @@
   position: fixed;
   top: 64px;
   width: 220px;
-  background: var(--panel);
+  /* Deep blue-black gradient — cooler at top-left, darker towards bottom.
+     Slightly more opaque than --panel token to ensure readability over the globe. */
+  background: linear-gradient(160deg, rgba(2,12,24,0.94) 0%, rgba(1,6,14,0.92) 100%);
   border: 1px solid var(--border);
+  /* Left accent bar — classified document tab visual language, matches #flight-panel treatment */
+  border-left: 2px solid rgba(0, 255, 224, 0.45);
+  /* Inner top line provides a subtle top-edge highlight; outer shadow grounds the panel */
+  box-shadow: inset 0 1px 0 rgba(0,255,224,0.08), 0 4px 24px rgba(0,0,0,0.4);
   backdrop-filter: blur(12px);
   padding: 16px;
   z-index: 20;
@@ -18,14 +24,23 @@
 .panel-left  { left: 16px; }
 .panel-right { right: 16px; /* width inherits 220px from .panel base rule */ }
 
+/* Panel title — Barlow Condensed for the tight, uppercase label style.
+   ::before injects a "//" comment prefix as a code-terminal convention.
+   Border-bottom replaced with a very faint rule — enough to separate without dominating. */
 .panel-title {
-  font-size: 9px;
+  font-family: var(--font-condensed);
+  font-size: 11px;
+  font-weight: 600;
   letter-spacing: 0.3em;
   color: var(--accent);
   text-transform: uppercase;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(0, 255, 224, 0.08);
+}
+.panel-title::before {
+  content: '// ';
+  opacity: 0.4;
 }
 
 /* ============================================================
@@ -37,8 +52,11 @@
   bottom: 42px;
   right: 16px;
   width: 220px;
-  background: var(--panel);
+  background: linear-gradient(160deg, rgba(2,12,24,0.94) 0%, rgba(1,6,14,0.92) 100%);
   border: 1px solid var(--border);
+  /* Softer accent bar — this panel is secondary, so slightly lower opacity than .panel */
+  border-left: 2px solid rgba(0, 255, 224, 0.3);
+  box-shadow: inset 0 1px 0 rgba(0,255,224,0.08), 0 4px 24px rgba(0,0,0,0.4);
   backdrop-filter: blur(12px);
   padding: 12px 16px;
   z-index: 20;
@@ -78,19 +96,52 @@
   text-align: right;
 }
 
-/* Stat rows */
+/* Stat rows — redesigned for dramatic large-number readout.
+   Label left, value right, aligned to baseline so the large number
+   anchors visually to the same baseline as the small label. */
 .stat-row {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  font-size: 11px;
+  align-items: baseline;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  /* Very faint separator — just enough to visually isolate each data row */
+  border-bottom: 1px solid rgba(255,255,255,0.03);
 }
-.stat-label { color: var(--dim); }
-.stat-value { color: var(--text); font-weight: 700; }
-.stat-value.green  { color: var(--accent); }
-.stat-value.red    { color: var(--accent2); }
-.stat-value.yellow { color: var(--accent3); }
+
+/* 8px uppercase label — dim/secondary, not competing with the number */
+.stat-label {
+  font-family: var(--font-condensed);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+
+/* 22px mono number — the dramatic readout is the entire point of this redesign.
+   line-height: 1 prevents the large size from collapsing the row height unevenly. */
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  line-height: 1;
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Color + glow on each accent variant — phosphor-screen emission per data type */
+.stat-value.green  {
+  color: var(--accent);
+  text-shadow: 0 0 12px rgba(0, 255, 224, 0.4);
+}
+.stat-value.red    {
+  color: var(--accent2);
+  text-shadow: 0 0 12px rgba(255, 68, 68, 0.4);
+}
+.stat-value.yellow {
+  color: var(--accent3);
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+}
 
 /* Sub-filter chip containers — flights, ships, jamming, airspace */
 #flight-filters,
@@ -103,6 +154,8 @@
   padding: 0 0 10px 18px;
 }
 
+/* Filter chips — Barlow Condensed for tight military label feel.
+   Slightly larger padding for a more substantial tap/click target. */
 .as-chip {
   display: flex;
   align-items: center;
@@ -110,10 +163,10 @@
   background: none;
   border: 1px solid rgba(255,255,255,0.1);
   color: rgba(200,216,232,0.35);
-  font-family: var(--font-mono);
-  font-size: 10px; /* was 8px — below legibility threshold for interactive labels */
-  letter-spacing: 0.08em;
-  padding: 2px 7px 2px 5px;
+  font-family: var(--font-condensed);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  padding: 3px 8px 3px 6px;
   cursor: pointer;
   transition: all 0.15s;
   user-select: none;
@@ -122,9 +175,10 @@
   border-color: rgba(255,255,255,0.28);
   color: rgba(200,216,232,0.7);
 }
+/* Active chip — visible but not as bright as accent, to avoid competing with stat values */
 .as-chip.on {
-  border-color: rgba(255,255,255,0.22);
-  color: #c8d8e8;
+  border-color: rgba(255,255,255,0.3);
+  color: #d8e8f0;
 }
 .as-dot {
   width: 5px;
@@ -192,7 +246,7 @@
   cursor: ew-resize;
 }
 
-/* Layer items */
+/* Layer items — increased padding for a better hover/click area */
 .layer-item {
   display: flex;
   align-items: center;
@@ -200,14 +254,15 @@
   margin-bottom: 10px;
   cursor: pointer;
   transition: background var(--transition);
+  padding: 2px 4px;
   user-select: none;
 }
-/* Background highlight on hover — matches .wf-row:hover pattern.
-   Previously used opacity: 0.75 which read as "disabled" rather than "focused". */
-.layer-item:hover { background: rgba(0, 255, 224, 0.04); }
+/* Slightly stronger hover than before — enough to read as "focused" not "disabled" */
+.layer-item:hover { background: rgba(0, 255, 224, 0.05); }
 
+/* Layer dot — 10×10px for better visual weight alongside larger stat values */
 .layer-dot {
-  width: 8px; height: 8px;
+  width: 10px; height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -218,10 +273,11 @@
   flex: 1;
 }
 
-/* Toggle switch */
+/* Toggle switch — slightly taller track (16px) to match the increased layer-dot size.
+   Thumb scaled to 10×10px to fill the new track proportionally. */
 .toggle {
-  width: 28px; height: 14px;
-  border-radius: 7px;
+  width: 32px; height: 16px;
+  border-radius: 8px;
   border: 1px solid var(--border);
   position: relative;
   transition: background var(--transition), border-color var(--transition);
@@ -238,7 +294,7 @@
   content: '';
   position: absolute;
   top: 2px;
-  width: 8px; height: 8px;
+  width: 10px; height: 10px;
   border-radius: 50%;
   transition: all var(--transition);
 }
